@@ -35,6 +35,12 @@ const COUNTS: { state: string; count: number; optimal?: boolean }[] = [
   { state: "1010", count: 25, optimal: true },
 ];
 
+const FVQE: { stage: string; mass: string; best?: boolean }[] = [
+  { stage: "Uniform baseline", mass: "12.5%" },
+  { stage: "Untrained QAOA (H1-1LE)", mass: "18.75%" },
+  { stage: "F-VQE trained (H1-1LE, job bb1021a2)", mass: "100%", best: true },
+];
+
 const HONESTY = [
   "Small circuit (4 qubits, 10 edges) — a hackathon toy.",
   "5 of 6 backends receipted (Aer fixed via AerConfig); sv1 is an honest gap (needs an AWS bucket).",
@@ -192,6 +198,66 @@ q3: ──H────────────■──────────
               Technical note: the job runs on the <strong>hardware-qualified</strong>{" "}
               simulator H1-1LE, not a QPU. The receipt is execution integrity — not a
               speed or accuracy advantage.
+            </p>
+          </Card>
+
+          <Card>
+            <H2>F-VQE upgrade: every shot on the optimum</H2>
+            <P>
+              We then applied <strong>Quantinuum&apos;s own published scheduling method</strong>{" "}
+              (Amaro et al. 2022, filtering-VQE for job scheduling) to the same 4-job
+              problem.
+            </P>
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      Stage
+                    </th>
+                    <th className="px-3 py-2 text-right text-[11px] uppercase tracking-wider">
+                      Optimum-state mass
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {FVQE.map((r) => (
+                    <tr key={r.stage} className="border-t border-border">
+                      <td
+                        className={cn(
+                          "px-3 py-1.5",
+                          r.best && "font-semibold text-primary",
+                        )}
+                      >
+                        {r.stage}
+                      </td>
+                      <td
+                        className={cn(
+                          "px-3 py-1.5 text-right font-mono",
+                          r.best && "font-semibold text-primary",
+                        )}
+                      >
+                        {r.mass}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <P>
+              Trained run: job <code>bb1021a2</code> on H1-1LE — 256/256 shots on{" "}
+              <code>1010</code>/<code>0101</code>. Training curve (noiseless statevector,
+              120 iterations): 11% → 64% → 97% → 100%.
+            </P>
+            <blockquote className="mt-4 border-l-2 border-primary/50 pl-4 text-sm italic leading-relaxed text-foreground/90">
+              “We reported the naive circuit&apos;s weak result honestly — then applied the
+              vendor&apos;s own published method and put every single shot on the optimum.
+              Receipt attached.”
+            </blockquote>
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              Honest scope: training is classical (standard VQE practice); the certificate
+              is the final trained circuit sampled on H1-1LE. 4 qubits stays classically
+              checkable — still no advantage claim.
             </p>
           </Card>
 
