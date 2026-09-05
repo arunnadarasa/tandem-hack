@@ -29,21 +29,23 @@ export function SetupScreen() {
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   return (
-    <main className="min-h-screen bg-surface">
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Stethoscope className="h-5 w-5" />
+    <main className="app-canvas min-h-screen">
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="rise-in flex items-center gap-3.5">
+          <div className="glow-primary flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+            <Stethoscope className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Ward Round Board</h1>
-            <p className="text-sm text-muted-foreground">
-              Start your shift — pick a ward, sign in, and take your patients.
+            <p className="eyebrow">Start of shift</p>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight">Ward Round Board</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Pick a ward, sign in, and take your patients.
             </p>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 rounded-xl border border-border bg-card p-5 md:grid-cols-3">
+        <div className="panel rise-in mt-8 grid gap-4 rounded-2xl p-6 md:grid-cols-3">
+
           <div className="md:col-span-3">
             <Label className="text-xs uppercase tracking-wide text-muted-foreground">Ward</Label>
             <div className="mt-2 flex flex-wrap gap-2">
