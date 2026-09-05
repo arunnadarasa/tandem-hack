@@ -1702,8 +1702,12 @@ q3: ──H────────────■──────────
   );
 }
 
-function Card({ children }: { children: React.ReactNode }) {
-  return <div className="panel lift rounded-2xl p-6">{children}</div>;
+function Card({ id, children }: { id?: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className="panel lift scroll-mt-28 rounded-2xl p-6">
+      {children}
+    </section>
+  );
 }
 
 function H2({ children }: { children: React.ReactNode }) {
