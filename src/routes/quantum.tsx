@@ -1539,14 +1539,18 @@ q3: ──H────────────■──────────
 }
 
 function Card({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">{children}</div>
-  );
+  return <div className="panel lift rounded-2xl p-6">{children}</div>;
 }
 
 function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="mb-3 text-lg font-semibold">{children}</h2>;
+  return (
+    <h2 className="mb-3 font-display text-xl font-bold tracking-tight">
+      <span className="mr-2 inline-block h-3 w-1 rounded-full bg-primary align-middle" />
+      {children}
+    </h2>
+  );
 }
+
 
 function P({ children }: { children: React.ReactNode }) {
   return <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{children}</p>;
