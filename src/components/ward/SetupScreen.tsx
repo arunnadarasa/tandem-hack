@@ -29,21 +29,23 @@ export function SetupScreen() {
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   return (
-    <main className="min-h-screen bg-surface">
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Stethoscope className="h-5 w-5" />
+    <main className="app-canvas min-h-screen">
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="rise-in flex items-center gap-3.5">
+          <div className="glow-primary flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+            <Stethoscope className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Ward Round Board</h1>
-            <p className="text-sm text-muted-foreground">
-              Start your shift — pick a ward, sign in, and take your patients.
+            <p className="eyebrow">Start of shift</p>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight">Ward Round Board</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Pick a ward, sign in, and take your patients.
             </p>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 rounded-xl border border-border bg-card p-5 md:grid-cols-3">
+        <div className="panel rise-in mt-8 grid gap-4 rounded-2xl p-6 md:grid-cols-3">
+
           <div className="md:col-span-3">
             <Label className="text-xs uppercase tracking-wide text-muted-foreground">Ward</Label>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -103,9 +105,10 @@ export function SetupScreen() {
           </div>
         </div>
 
-        <div className="mt-6 flex items-end justify-between">
+        <div className="mt-8 flex items-end justify-between">
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide">Assign your patients</h2>
+            <p className="eyebrow">Step two</p>
+            <h2 className="font-display text-lg font-bold tracking-tight">Assign your patients</h2>
             <p className="text-xs text-muted-foreground">
               {ward.split(" — ")[0]} has {AREAS.length} bays of 6. Tap the beds you are covering.
             </p>
@@ -113,11 +116,12 @@ export function SetupScreen() {
           <p className="font-mono text-sm text-muted-foreground">{selected.length} selected</p>
         </div>
 
-        <div className="mt-3 grid gap-4 lg:grid-cols-2">
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {byArea.map(({ area, list }) => (
-            <div key={area} className="rounded-xl border border-border bg-card p-3">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">{area}</h3>
+            <div key={area} className="panel rounded-2xl p-4">
+              <div className="mb-2.5 flex items-center justify-between">
+                <h3 className="font-display text-sm font-bold tracking-tight">{area}</h3>
+
                 <button
                   className="text-xs text-primary hover:underline"
                   onClick={() =>
@@ -141,24 +145,24 @@ export function SetupScreen() {
                       key={p.id}
                       onClick={() => toggle(p.id)}
                       className={cn(
-                        "flex items-center gap-2 rounded-md border px-2 py-1.5 text-left transition-colors",
+                        "flex items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left transition-all duration-200",
                         on
-                          ? "border-primary bg-primary/8"
-                          : "border-transparent hover:bg-accent/60",
+                          ? "border-primary/50 bg-primary/12 shadow-[0_10px_30px_-24px_var(--primary)]"
+                          : "border-transparent hover:bg-accent/50",
                       )}
                     >
                       <span
                         className={cn(
-                          "flex h-5 w-5 items-center justify-center rounded border",
+                          "flex h-5 w-5 items-center justify-center rounded-md border transition-colors",
                           on ? "border-primary bg-primary text-primary-foreground" : "border-border",
                         )}
                       >
                         {on && <Check className="h-3 w-3" />}
                       </span>
-                      <span className="rounded bg-foreground px-1.5 py-0.5 font-mono text-[11px] font-bold text-background">
+                      <span className="rounded-md bg-foreground px-1.5 py-0.5 font-mono text-[11px] font-bold text-background">
                         {p.bed}
                       </span>
-                      <span className="min-w-0 flex-1 truncate text-sm">{p.name}</span>
+                      <span className="min-w-0 flex-1 truncate text-sm font-medium">{p.name}</span>
                       <span className="hidden truncate text-xs text-muted-foreground sm:block sm:max-w-[10rem]">
                         {p.summary}
                       </span>
@@ -171,10 +175,11 @@ export function SetupScreen() {
           ))}
         </div>
 
-        <div className="sticky bottom-4 mt-6 flex justify-end">
+        <div className="sticky bottom-4 mt-8 flex justify-end">
           <Button
             size="lg"
             disabled={!ready}
+            className="rounded-xl px-6 shadow-[0_18px_50px_-24px_var(--primary)]"
             onClick={() =>
               startShift({ ward, name: name.trim(), bleep: bleep.trim(), patientIds: selected })
             }
@@ -182,6 +187,7 @@ export function SetupScreen() {
             Start shift on {ward.split(" — ")[0]}
           </Button>
         </div>
+
       </div>
     </main>
   );

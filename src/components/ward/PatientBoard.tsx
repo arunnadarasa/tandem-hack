@@ -28,17 +28,17 @@ export function PatientBoard({
     <div className="space-y-6">
       {areas.map(({ area, list }) => (
         <section key={area}>
-          <h2 className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-primary" />
+          <h2 className="mb-2.5 flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_12px_var(--primary)]" />
             {area}
             <span className="font-mono text-[11px] font-medium normal-case tracking-normal">
               {list.length} patients
             </span>
           </h2>
-          <div className="overflow-hidden rounded-xl border border-border bg-card">
+          <div className="panel overflow-hidden rounded-2xl">
             <div
               className={cn(
-                "grid items-center gap-3 border-b border-border bg-accent/40 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+                "grid items-center gap-3 border-b border-border bg-surface/50 px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground",
                 gridCols,
               )}
             >
@@ -63,13 +63,14 @@ export function PatientBoard({
         </section>
       ))}
       {areas.length === 0 && (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-2xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
           No patients in this view.
         </p>
       )}
     </div>
   );
 }
+
 
 function PatientRow({
   patient,
@@ -106,16 +107,19 @@ function PatientRow({
           }
         }}
         className={cn(
-          "grid w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-accent/50",
+          "grid w-full cursor-pointer items-center gap-3 px-3.5 py-3 text-left transition-colors hover:bg-accent/40",
+          open && "bg-accent/30",
           gridCols,
         )}
       >
-        <span className="rounded-md bg-primary py-1.5 text-center font-mono text-xs font-bold text-primary-foreground">
+        <span className="rounded-lg bg-primary py-1.5 text-center font-mono text-xs font-bold text-primary-foreground shadow-[0_8px_20px_-14px_var(--primary)]">
           {patient.bed}
         </span>
         <span className="min-w-0">
           <span className="flex items-baseline gap-2">
-            <span className="truncate text-sm font-semibold">{patient.name}</span>
+            <span className="truncate font-display text-sm font-semibold tracking-tight">
+              {patient.name}
+            </span>
             <span className="text-xs text-muted-foreground">
               {patient.age}
               {patient.sex}
@@ -145,13 +149,13 @@ function PatientRow({
         </span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 justify-self-end text-muted-foreground transition-transform",
-            open && "rotate-180",
+            "h-4 w-4 shrink-0 justify-self-end text-muted-foreground transition-transform duration-200",
+            open && "rotate-180 text-primary",
           )}
         />
       </div>
       {open && (
-        <div className="space-y-1.5 border-t border-border bg-surface/70 px-2.5 py-2.5">
+        <div className="rise-in space-y-1.5 border-t border-border bg-surface/60 px-3 py-3">
           {sortJobs([...todo, ...chase]).map((j) => (
             <JobRow key={j.id} job={j} mergedStatus />
           ))}
@@ -162,5 +166,6 @@ function PatientRow({
         </div>
       )}
     </div>
+
   );
 }

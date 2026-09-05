@@ -27,9 +27,9 @@ export function NewsPill({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "inline-flex h-7 items-center justify-center rounded-md px-2 font-mono text-[11px] font-semibold tabular-nums",
-        tone === "high" && "bg-news-high/15 text-news-high ring-1 ring-news-high/40",
-        tone === "med" && "bg-news-med/15 text-news-med ring-1 ring-news-med/40",
+        "inline-flex h-7 items-center justify-center rounded-lg px-2.5 font-mono text-[11px] font-bold tabular-nums",
+        tone === "high" && "bg-news-high/18 text-news-high ring-1 ring-news-high/45 shadow-[0_0_18px_-8px_var(--news-high)]",
+        tone === "med" && "bg-news-med/16 text-news-med ring-1 ring-news-med/40",
         tone === "low" && "bg-news-low/12 text-news-low ring-1 ring-news-low/30",
       )}
       title={`NEWS ${score}`}
@@ -38,6 +38,7 @@ export function NewsPill({ score }: { score: number }) {
     </span>
   );
 }
+
 
 export function DoctorChip({
   doctor,
@@ -188,11 +189,12 @@ export function JobRow({
   return (
     <div
       className={cn(
-        "group flex items-start gap-2.5 rounded-lg border-l-[3px] bg-surface/50 px-2.5 py-2 transition-colors hover:bg-accent/50",
+        "group flex items-start gap-2.5 rounded-xl border border-border border-l-[3px] bg-surface/60 px-3 py-2.5 transition-all duration-200 hover:-translate-y-px hover:bg-accent/40",
         CATEGORY_STYLE[job.category].border,
         job.status === "done" && "opacity-55",
       )}
     >
+
       <button
         type="button"
         aria-label={job.status === "done" ? "Mark as to do" : "Mark as done"}
