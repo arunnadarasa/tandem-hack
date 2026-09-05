@@ -671,7 +671,7 @@ function useActiveSection(ids: string[]) {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { rootMargin: "-5% 0px -85% 0px", threshold: 0 }
     );
     ids.forEach((id) => {
       const el = document.getElementById(id);
