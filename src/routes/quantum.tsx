@@ -1355,9 +1355,10 @@ q3: ──H────────────■──────────
           <Card>
             <H2>Take the skill with you</H2>
             <P>
-              The two agent skills behind this work are downloadable here. Drop them into a
-              Lovable project, a Hermes agent, or a Telegram bot and the same discipline —
-              receipts, shot counts, pre-registered bars — comes with them.
+              The agent skills behind this work are downloadable here — the quantum lanes and
+              the clinical safety discipline. Drop them into a Lovable project, Claude Code, an
+              OpenClaw or Hermes agent, or a Telegram bot and the same discipline — receipts,
+              shot counts, pre-registered bars, hazard-led claims — comes with them.
             </P>
 
             <div className="mt-4 grid gap-3">
@@ -1373,6 +1374,11 @@ q3: ──H────────────■──────────
                     <span className="font-mono text-xs text-primary">v{s.version}</span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">{s.summary}</p>
+                  {s.note && (
+                    <p className="mt-2 rounded-lg border border-border bg-card px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                      {s.note}
+                    </p>
+                  )}
                   <div className="mt-2 flex flex-wrap gap-1">
                     {s.tags.map((t) => (
                       <span
@@ -1390,19 +1396,42 @@ q3: ──H────────────■──────────
                         Download SKILL.md
                       </Button>
                     </a>
-                    <a
-                      href={s.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2"
-                    >
-                      View on GitHub
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
+                    {s.github && (
+                      <a
+                        href={s.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2"
+                      >
+                        View on GitHub
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
                   </div>
+                  {s.extras && (
+                    <div className="mt-3 border-t border-border pt-3">
+                      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Companion references
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {s.extras.map((x) => (
+                          <a
+                            key={x.file}
+                            href={x.file}
+                            download={x.label.split("/").pop()}
+                            className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-primary hover:bg-accent/50"
+                          >
+                            <Download className="h-3 w-3" />
+                            {x.label}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+
 
             <h3 className="mt-6 mb-2 text-sm font-semibold">Installing it</h3>
             <div className="grid gap-3 sm:grid-cols-3">
