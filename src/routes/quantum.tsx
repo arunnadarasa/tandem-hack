@@ -662,10 +662,13 @@ const SECTIONS = [
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = React.useState<string>(ids[0] ?? "");
+  const jumpingRef = React.useRef<number>(0);
+
   React.useEffect(() => {
     if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() < jumpingRef.current) return;
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
@@ -679,19 +682,22 @@ function useActiveSection(ids: string[]) {
     });
     return () => observer.disconnect();
   }, [ids]);
-  return active;
-}
 
-function JumpNav({ active }: { active: string }) {
-  const scrollTo = (id: string) => {
+  const jumpTo = React.useCallback((id: string) => {
+    setActive(id);
+    jumpingRef.current = Date.now() + 800;
     if (id === "top") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  }, []);
 
+  return { active, jumpTo };
+}
+
+function JumpNav({ active, jumpTo }: { active: string; jumpTo: (id: string) => void }) {
   return (
     <nav className="panel sticky top-4 z-30 mb-6 rounded-2xl p-2">
       <div
@@ -701,7 +707,7 @@ function JumpNav({ active }: { active: string }) {
         {SECTIONS.map((s) => (
           <button
             key={s.id}
-            onClick={() => scrollTo(s.id)}
+            onClick={() => jumpTo(s.id)}
             className={cn(
               "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
               active === s.id
@@ -713,7 +719,7 @@ function JumpNav({ active }: { active: string }) {
           </button>
         ))}
         <button
-          onClick={() => scrollTo("top")}
+          onClick={() => jumpTo("top")}
           className="shrink-0 rounded-full border border-border bg-surface/70 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent/50"
         >
           Top
