@@ -198,10 +198,10 @@ export function buildWard() {
   const jobs: Job[] = [];
 
   AREAS.forEach((area, ai) => {
-    for (let i = 0; i < 12; i++) {
-      const bedNum = ai * 12 + i + 1;
+    for (let i = 0; i < 6; i++) {
+      const bedNum = ai * 6 + i + 1;
       const id = `p${bedNum}`;
-      const name = `${FIRST[(ai * 12 + i) % FIRST.length]} ${
+      const name = `${FIRST[(ai * 6 + i) % FIRST.length]} ${
         LAST[Math.floor(rand() * LAST.length)]
       }`;
       const news = [0, 0, 1, 1, 2, 2, 3, 4, 5, 7][Math.floor(rand() * 10)] ?? 0;

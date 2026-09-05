@@ -107,7 +107,7 @@ export function SetupScreen() {
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide">Assign your patients</h2>
             <p className="text-xs text-muted-foreground">
-              {ward.split(" — ")[0]} has {AREAS.length} bays of 12. Tap the beds you are covering.
+              {ward.split(" — ")[0]} has {AREAS.length} bays of 6. Tap the beds you are covering.
             </p>
           </div>
           <p className="font-mono text-sm text-muted-foreground">{selected.length} selected</p>
