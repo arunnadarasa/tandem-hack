@@ -786,7 +786,7 @@ function QuantumPage() {
           </div>
         </header>
 
-        <JumpNav active={active} />
+        <JumpNav active={active} jumpTo={jumpTo} />
 
         <section className="space-y-6">
           <Card id="problem">
