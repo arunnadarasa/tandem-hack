@@ -1701,6 +1701,96 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
+          <Card id="quantum-origin">
+            <H2>Quantum Origin — the entropy upgrade, named as future work</H2>
+            <P>
+              The roadmap line above says the next step is a certified entropy source. This is
+              what that means concretely. Every key that protects a signed handover starts from
+              randomness, and classical randomness can only ever be tested, never proven — NIST
+              itself says statistical tests cannot guarantee unpredictability, and an
+              adversarially chosen single-bit bias could take billions of years of sampling at
+              gigabit speeds to detect. Quantum Origin, Quantinuum's software-deployed quantum
+              random number generator, replaces that hope with a mathematical proof taken at the
+              point of generation.
+            </P>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              How it works
+            </h3>
+            <div className="mt-3 space-y-2">
+              {QO_PIPELINE.map((s) => (
+                <div key={s.step} className="rounded-lg border border-border bg-surface/70 p-3">
+                  <p className="text-sm font-semibold text-foreground">{s.step}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Why it fits WardFlow
+            </h3>
+            <div className="mt-3 space-y-2">
+              {QO_FIT.map((f) => (
+                <div key={f.title} className="rounded-lg border border-border bg-surface/70 p-3">
+                  <p className="text-sm font-semibold text-foreground">{f.title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Integration lanes, as documented
+            </h3>
+            <div className="mt-3 space-y-2">
+              {QO_LANES.map((l) => (
+                <div
+                  key={l.lane}
+                  className="grid gap-1 rounded-lg border border-border bg-surface/70 p-3 sm:grid-cols-[10rem_1fr]"
+                >
+                  <p className="font-mono text-sm font-semibold text-primary">{l.lane}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{l.use}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              All lanes share a versioned Common Core, and each integration version is paired
+              with a specific Common Core version.
+            </p>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Honest boundary (binding)
+            </h3>
+            <div className="mt-3 space-y-2">
+              {QO_BOUNDARY.map((b) => (
+                <p
+                  key={b}
+                  className="rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground"
+                >
+                  {b}
+                </p>
+              ))}
+            </div>
+
+            <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Sources
+            </h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {QO_SOURCES.map((s) => (
+                <li key={s.url} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary underline underline-offset-2"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
           <Card id="skills">
             <H2>Take the skill with you</H2>
             <P>
