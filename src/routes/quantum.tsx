@@ -291,7 +291,44 @@ const REFERENCES = [
   "Jin, He, Amaro et al., arXiv:2504.21172 — Iceberg parity-check pattern.",
   "Niroula et al., arXiv:2511.03689 — Helios 98-qubit real-time execution.",
   "Quantinuum H2 and Helios product data sheets — hardware numbers, never invented.",
+  "Oskrochi Y & Grimes K, CSC-QT: a quality assessment tool for DCB0129/DCB0160 clinical safety cases, BMJ Innovations (2026), doi 10.1136/bmjinnov-2026-001660 — clinical safety review structure.",
 ];
+
+const CSC_DOMAINS: { domain: string; evidence: string }[] = [
+  {
+    domain: "1. Scope and context",
+    evidence:
+      "Named owner and accountable author, versioned model card (v1.0), the system explicitly identified as the WardFlow Quantum Capability Layer, and the deployment context stated as a hackathon build on emulators only.",
+  },
+  {
+    domain: "2. Hazard identification and structure",
+    evidence:
+      "An honest-negatives register rather than a highlight reel: unoptimised QAOA explores instead of concentrating, the 98-qubit lane is Clifford-only, and the sv1 backend is a recorded gap. Each is a named limitation, not buried in prose.",
+  },
+  {
+    domain: "3. Risk assessment",
+    evidence:
+      "An uncertainty envelope of 4·√(0.5/shots) applied to every probability claim (0.088 at 256 shots), with the classical baseline stated per run so a reader can judge the margin themselves.",
+  },
+  {
+    domain: "4. Controls and evidence",
+    evidence:
+      "Every claim carries a job ID and shot count. The controls are the pre-registered pass bar, fixed seeds (11/31), pinned packages, and a submit journal so job IDs survive process death.",
+  },
+  {
+    domain: "5. Safety argument",
+    evidence:
+      "The binding conclusion: the classical sort remains the decision-maker, the quantum layer is a tamper-evident seal, and no clinical or quantum-advantage claim is made anywhere.",
+  },
+];
+
+const SAFETY_POSITION = [
+  "DPIA GREEN — synthetic dummy jobs only; no patient data enters the quantum layer at any point.",
+  "Out of scope for clinical decision-making. Nothing here is a device function, and no diagnostic or triage claim is made.",
+  "Not a deployed system, so no live DCB0160 safety case is claimed for it.",
+  "The quantum receipts are execution-integrity evidence — the kind of artefact a hazard log's evidence column would reference. They do not by themselves discharge any DCB duty.",
+];
+
 
 
 
@@ -752,6 +789,79 @@ q3: ──H────────────■──────────
               ))}
             </ol>
           </Card>
+
+          <Card>
+            <H2>Quantum Digital Clinical Safety</H2>
+            <P>
+              NHS digital health is assured through <strong>clinical safety cases</strong> —
+              DCB0129 for manufacturers, DCB0160 for deploying organisations. The{" "}
+              <strong>CSC-QT</strong> (Curistica) is a peer-reviewed instrument that gives
+              reviewers a structure for judging whether such a safety case is any good: 36
+              indicators across five domains, marked present or not present, reported as a
+              domain profile rather than a score.
+            </P>
+            <P>
+              The quantum layer is written to be <em>reviewable under that same
+              discipline</em>: named accountability, versioned documents, pre-registered
+              pass bars, and evidence attached to every claim.
+            </P>
+
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      CSC-QT domain
+                    </th>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      What the quantum layer puts in front of a reviewer
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CSC_DOMAINS.map((d) => (
+                    <tr key={d.domain} className="border-t border-border align-top">
+                      <td className="px-3 py-2 font-medium text-foreground">{d.domain}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{d.evidence}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Safety position</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {SAFETY_POSITION.map((s) => (
+                <li key={s} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              <strong>Honest gap:</strong> WardFlow has not been reviewed with the CSC-QT
+              and holds no completed DCB0129 or DCB0160 safety case. The CSC-QT is named
+              here as the instrument that would be used if this system were taken toward
+              deployment — not as a review it has passed.
+            </p>
+
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              CSC-QT: Oskrochi Y, Grimes K, <em>What good looks like in clinical safety</em>,
+              BMJ Innovations (2026), doi 10.1136/bmjinnov-2026-001660. Freely available
+              under CC BY 4.0, funded through RADIANT-CERSI.{" "}
+              <a
+                href="https://csc-qt.curistica.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline underline-offset-2"
+              >
+                csc-qt.curistica.com
+              </a>
+            </p>
+          </Card>
+
+
 
           <Card>
             <H2>Clinical Quantum Methodology (CQM v1.3)</H2>
