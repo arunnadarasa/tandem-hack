@@ -730,7 +730,7 @@ function JumpNav({ active, jumpTo }: { active: string; jumpTo: (id: string) => v
 }
 
 function QuantumPage() {
-  const active = useActiveSection(SECTIONS.map((s) => s.id));
+  const { active, jumpTo } = useActiveSection(SECTIONS.map((s) => s.id));
   return (
     <main className="app-canvas min-h-screen px-4 py-8 text-foreground">
       <div className="mx-auto max-w-3xl">
