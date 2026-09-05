@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Activity, LayoutList, Rows3, LogOut } from "lucide-react";
+import { Activity, Atom, LayoutList, Rows3, LogOut } from "lucide-react";
 
 import { CATEGORY_META, CATEGORY_ORDER, type JobCategory } from "@/lib/ward-data";
 import { CATEGORY_STYLE } from "@/components/ward/category-style";
@@ -133,6 +133,14 @@ function Shell() {
           <JobsBoard patients={visible} filter={filter} />
         )}
       </div>
+
+      <Link
+        to="/quantum"
+        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-gradient-to-r from-primary/20 to-primary/10 px-4 py-2 text-sm font-semibold text-primary shadow-lg backdrop-blur transition-all hover:scale-105 hover:shadow-primary/20"
+      >
+        <Atom className="h-4 w-4" />
+        Quantum
+      </Link>
     </main>
   );
 }
