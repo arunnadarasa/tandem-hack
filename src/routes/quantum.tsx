@@ -34,6 +34,26 @@ const SKILLS: {
     github:
       "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/telegram-quantum-hermes/SKILL.md",
   },
+  {
+    name: "wardflow-quantum (Claude Code)",
+    version: "1.0.0",
+    summary:
+      "The project constitution for Claude Code: classical decides and quantum only signs the receipt, every number carries its shots and envelope, honest negatives ship as-is, one cited method upgrade then the verdict stands — plus the backend lane map, Helios Guppy quirks and pytket traps. Shipped in the repo at both skills/claude-code/ and .claude/skills/wardflow-quantum/.",
+    tags: ["quantum", "claude-code", "quantinuum", "receipts", "methodology"],
+    file: "/skills/wardflow-quantum-claude-code-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/claude-code/SKILL.md",
+  },
+  {
+    name: "tandem-hack-quantum (OpenClaw)",
+    version: "1.0.0",
+    summary:
+      "The OpenClaw edition by Arun Nadarasa and the WardFlow quantum team: the same evidence constitution — receipt law, honest-negative discipline, the no-advantage wording rule and DPIA-green synthetic data — with the verified backend lane map and the Telegram team lane, so any OpenClaw agent produces committed, verifiable quantum work.",
+    tags: ["quantum", "openclaw", "nexus", "qaoa", "fvqe", "wardflow"],
+    file: "/skills/openclaw-tandem-hack-quantum-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/openclaw/SKILL.md",
+  },
 ];
 
 const INSTALL_LANES: { lane: string; steps: string[] }[] = [
@@ -44,6 +64,23 @@ const INSTALL_LANES: { lane: string; steps: string[] }[] = [
       "Put it at .agents/skills/<skill-name>/SKILL.md in your project.",
       "Activate it in Settings › Skills.",
       "The frontmatter name and description are what make it load on the right task — keep them intact.",
+    ],
+  },
+  {
+    lane: "Claude Code",
+    steps: [
+      "Download the Claude Code skill.",
+      "Save it at .claude/skills/wardflow-quantum/SKILL.md in your repository.",
+      "Claude Code picks it up automatically when you work on quantum circuits or edit any surface that cites receipt numbers.",
+      "Keep AGENT_SOUL.md and docs/clinical-quantum-methodology.md nearby — the skill loads them alongside itself.",
+    ],
+  },
+  {
+    lane: "OpenClaw",
+    steps: [
+      "Download the OpenClaw skill and keep its folder name.",
+      "Drop the folder into your agent's skills directory.",
+      "The frontmatter name, description, version and tags are what make it trigger — leave them untouched.",
     ],
   },
   {
@@ -63,6 +100,7 @@ const INSTALL_LANES: { lane: string; steps: string[] }[] = [
     ],
   },
 ];
+
 
 export const Route = createFileRoute("/quantum")({
   head: () => ({
