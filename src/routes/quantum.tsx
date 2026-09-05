@@ -915,7 +915,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="f-vqe">
             <H2>F-VQE upgrade: every shot on the optimum</H2>
             <P>
               We then applied <strong>Quantinuum&apos;s own published scheduling method</strong>{" "}
