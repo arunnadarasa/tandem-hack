@@ -125,6 +125,176 @@ const DEMO = [
   "Live demo: pick 4 jobs, show the shift split, copy the Nexus job link.",
 ];
 
+const PLAIN: { title: string; body: string }[] = [
+  {
+    title: "Classical stays in charge",
+    body: "WardFlow sorts the ward's jobs the normal, fast, explainable way. Nothing about the decision changes.",
+  },
+  {
+    title: "A real quantum job stamps it",
+    body: "Four jobs, split into NOW vs NEXT shifts, handed to Quantinuum Nexus as a 4-qubit puzzle (Max-Cut). The best score is 10, reached by exactly two patterns: 0101 and 1010.",
+  },
+  {
+    title: "The receipt is live and checkable",
+    body: "On H1-1LE, 256 shots landed on those best patterns 19% of the time; random guessing gives 12.5%. That fingerprint is tied to this handover and can't be quietly edited afterwards.",
+  },
+  {
+    title: "Why it matters",
+    body: "Handovers are where ward jobs get lost. A tamper-evident receipt means the incoming shift can prove what was agreed, not just remember it.",
+  },
+];
+
+const CARD_FIELDS: { label: string; value: string }[] = [
+  { label: "Name", value: "WardFlow Quantum Capability Layer" },
+  { label: "Version", value: "1.0 · 2026-09-05 (single-day build)" },
+  { label: "Owner", value: "Arun Nadarasa · Association for Clinical Quantum" },
+  { label: "Repository", value: "arunnadarasa/tandem-hack-quantum" },
+  { label: "Licence", value: "Open hackathon artifact · Nexus T&Cs govern backends" },
+  { label: "Methodology", value: "Clinical Quantum Methodology v1.3" },
+  { label: "Hardware family", value: "Quantinuum trapped-ion: H1 20q · H2 56q · Helios 98q" },
+  { label: "Execution tier", value: "Emulators only — no QPU run claimed" },
+  { label: "Simulator classes", value: "Statevector ≤26q · stabilizer 98q · noisy H1/H2-Em" },
+  { label: "Programming lanes", value: "pytket → Nexus → execute · Guppy → HUGR (Helios)" },
+  { label: "Native gates", value: "1q rotations + ZZ / parameterised-angle ZZ" },
+  { label: "Uncertainty envelope", value: "4·√(0.5/shots) — 0.088 @256, 0.0625 @512" },
+];
+
+const INTENDED_USE = [
+  "Primary use: tamper-evident execution receipts for ward-round handover — the classical WardFlow sort stays the decision-maker; the quantum layer stamps the agreed shift split with a checkable sampling fingerprint.",
+  "Intended users: hackathon judges, NHS digital teams evaluating quantum readiness, clinical quantum researchers.",
+];
+
+const OUT_OF_SCOPE = [
+  "Not clinical decision-making.",
+  "No patient-data processing — synthetic jobs only, DPIA GREEN.",
+  "No claim of quantum speed or accuracy advantage.",
+  "Not production deployment.",
+];
+
+const TRUST: { label: string; value: string }[] = [
+  { label: "Cataloged", value: "Skill, persona and methodology versioned in-repo" },
+  { label: "Scanned", value: "Secret-scan before every push; no hidden instructions" },
+  { label: "Evaluated", value: "With/without discipline: 0.1875 → 1.0000, receipts diffable" },
+  { label: "Signed", value: "Not yet — detached receipt signatures are future work" },
+  { label: "Documented", value: "This card (QUANTUM_CARD.md v1.0)" },
+];
+
+const CIRCUITS: {
+  circuit: string;
+  qubits: string;
+  backend: string;
+  job: string;
+  result: string;
+  verdict: string;
+  pass?: boolean;
+}[] = [
+  {
+    circuit: "Shift-split QAOA p=1",
+    qubits: "4",
+    backend: "H1-1LE, H2-1LE, H1/H2-Em, Aer",
+    job: "7f8ad56f +4",
+    result: "opt-mass 0.125–0.1875 vs 0.125 uniform",
+    verdict: "weak PASS",
+    pass: true,
+  },
+  {
+    circuit: "Shift-split F-VQE (Amaro 2022)",
+    qubits: "4",
+    backend: "H1-1LE",
+    job: "bb1021a2",
+    result: "opt-mass 1.0000 (256/256 shots)",
+    verdict: "PASS — method-validated",
+    pass: true,
+  },
+  {
+    circuit: "Shift-split QAOA p=2",
+    qubits: "8",
+    backend: "4 backends",
+    job: "e7e1a809 +3",
+    result: "mean-cut > uniform; opt-mass 0.01–0.04",
+    verdict: "honest negative",
+  },
+  {
+    circuit: "Whole-ward QAOA p=1",
+    qubits: "26",
+    backend: "Helios-1E-lite (HUGR)",
+    job: "67f9d2f4",
+    result: "mean-cut 43.61 vs 43.05",
+    verdict: "explores, doesn't concentrate",
+  },
+  {
+    circuit: "Whole-ward GHZ",
+    qubits: "26",
+    backend: "Helios-1E-lite (HUGR)",
+    job: "0fc1f87b",
+    result: "512/512 shots, GHZ-mass 1.0",
+    verdict: "PASS",
+    pass: true,
+  },
+  {
+    circuit: "Hospital-scale GHZ",
+    qubits: "98",
+    backend: "Helios-1E-lite (stabilizer)",
+    job: "b3d1c274",
+    result: "256/256 shots, 2 outcomes from a 3×10²⁹ space",
+    verdict: "PASS",
+    pass: true,
+  },
+  {
+    circuit: "Parity attestation (Iceberg-style)",
+    qubits: "98 (90 data + 8 parity)",
+    backend: "Helios-1E-lite (stabilizer)",
+    job: "8eddb96d",
+    result: "256/256 shots, parities consistent",
+    verdict: "PASS — tamper-evidence",
+    pass: true,
+  },
+];
+
+const EVALUATION = [
+  "Pre-registered bars: decision rules fixed in ward_shift_protocol.json before submission — PASS = optimum-mass ≥ uniform − envelope.",
+  "Classical baselines stated per run: brute-force optimum at 4q and 8q, 10k-sample uniform-random mean cut at 26q.",
+  "Reproducibility: seeds fixed (11/31), shots recorded, packages pinned (guppylang 1.0.x, pytket 2.18.1, qnexus), and a submit-journal so job IDs survive process death.",
+  "Honest verification gap: emulator results are classically simulable by construction — no classically-unverifiable claim exists here.",
+];
+
+const LIMITATIONS = [
+  "No quantum advantage. Binding wording: emulator scale runs are 'hardware-scale readiness'. Advantage is a pre-registered future claim gated on real QPU plus matched classical baselines.",
+  "Unoptimised variational circuits explore rather than concentrate (8q, 26q QAOA). F-VQE fixes this at 4q; scaling F-VQE training is untested here.",
+  "The 98-qubit lane is Clifford-only (stabilizer) — it certifies entanglement scale and parity structure, not optimisation.",
+  "sv1 (Braket) gap: needs an AWS S3 bucket; local execution hit a Nexus 500. Recorded, not retried blind.",
+  "Emulator noise models are not hardware — noisy-emulator receipts approximate but do not replace QPU characterisation.",
+];
+
+const CQM_VALUES: { value: string; over: string }[] = [
+  { value: "Problem-first", over: "Demonstration of technology" },
+  { value: "Reproducible workflow", over: "A single headline accuracy" },
+  { value: "Honest negatives", over: "Strained positives" },
+  { value: "Clinical safety", over: "Speed and hype" },
+];
+
+const CQM_PHASES = [
+  "Discovery — define the clinical problem, not the technology",
+  "Data shape — DPIA by design, GREEN synthetic data only",
+  "Bulletproof protocol — evidence scan, reject gates, pre-registration",
+  "Toy — smallest honest circuit, locked config, receipt required",
+  "Scale — same seed line, classical baseline at every rung",
+  "Minimum quantum advantage — an explicit go/no-go gate",
+  "Clinical integration — NHS pathway, hazard log, safety sign-off",
+  "Surveillance — continuous outcomes and incident reporting",
+];
+
+const REFERENCES = [
+  "Everitt & Ji, Model Cards for Quantum Technologies Reporting, arXiv:2412.13151 — card structure.",
+  "NVIDIA-Verified Agent Skills (docs.nvidia.com/skills) — trust-pipeline structure.",
+  "Amaro et al., Filtering variational quantum algorithms for combinatorial optimization, Quantum Sci. Technol. 7 015021 (2022) — the F-VQE method.",
+  "Jin, He, Amaro et al., arXiv:2504.21172 — Iceberg parity-check pattern.",
+  "Niroula et al., arXiv:2511.03689 — Helios 98-qubit real-time execution.",
+  "Quantinuum H2 and Helios product data sheets — hardware numbers, never invented.",
+];
+
+
+
 
 function QuantumPage() {
   return (
@@ -191,6 +361,31 @@ function QuantumPage() {
               Quantum provides the proof.
             </p>
           </Card>
+
+          <Card>
+            <H2>In plain English</H2>
+            <P>WardFlow decides. Quantum signs the receipt.</P>
+            <div className="mt-4 space-y-3">
+              {PLAIN.map((p) => (
+                <div
+                  key={p.title}
+                  className="rounded-lg border border-border bg-surface/70 px-3 py-2"
+                >
+                  <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {p.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Honesty footnote: toy problem, synthetic data, emulator run. No speed or
+              accuracy advantage over classical is claimed — quantum here is a verification
+              seal, not the decision-maker.
+            </p>
+          </Card>
+
+
 
           <Card>
             <H2>4 qubits → NOW/NEXT split (Max-Cut)</H2>
@@ -444,6 +639,199 @@ q3: ──H────────────■──────────
               classically simulable. Advantage is a pre-registered future claim.
             </p>
           </Card>
+
+
+
+          <Card>
+            <H2>Quantum model card (v1.0)</H2>
+            <P>
+              Structured per Everitt &amp; Ji, <em>Model Cards for Quantum Technologies
+              Reporting</em> (arXiv:2412.13151), crossed with the NVIDIA verified-skill
+              template — quantum transparency and agent-skill trust in one card.
+            </P>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {CARD_FIELDS.map((f) => (
+                <Metric key={f.label} label={f.label} value={f.value} />
+              ))}
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Intended use</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {INTENDED_USE.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold text-destructive">
+              Out of scope
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {OUT_OF_SCOPE.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Trust controls</h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {TRUST.map((t) => (
+                <Metric key={t.label} label={t.label} value={t.value} />
+              ))}
+            </div>
+          </Card>
+
+          <Card>
+            <H2>Every circuit, every receipt</H2>
+            <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[560px] text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["Circuit", "Qubits", "Backend(s)", "Job ID", "Result", "Verdict"].map(
+                      (h) => (
+                        <th
+                          key={h}
+                          className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                        >
+                          {h}
+                        </th>
+                      ),
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {CIRCUITS.map((c) => (
+                    <tr key={c.job} className="border-t border-border align-top">
+                      <td className="px-3 py-2">{c.circuit}</td>
+                      <td className="px-3 py-2 font-mono">{c.qubits}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{c.backend}</td>
+                      <td className="px-3 py-2 font-mono text-xs">{c.job}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{c.result}</td>
+                      <td
+                        className={cn(
+                          "px-3 py-2 text-xs font-semibold",
+                          c.pass ? "text-primary" : "text-muted-foreground",
+                        )}
+                      >
+                        {c.verdict}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Job IDs are Nexus references, listed as text — the Nexus console needs an
+              authenticated account.
+            </p>
+          </Card>
+
+          <Card>
+            <H2>Evaluation conditions &amp; limitations</H2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {EVALUATION.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Limitations &amp; risks</h3>
+            <ol className="space-y-2 text-sm text-muted-foreground">
+              {LIMITATIONS.map((t, i) => (
+                <li key={t} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                    {i + 1}
+                  </span>
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ol>
+          </Card>
+
+          <Card>
+            <H2>Clinical Quantum Methodology (CQM v1.3)</H2>
+            <P>
+              <strong>Problem first, quantum second.</strong> Workflow is the product,
+              quantum is optional augmentation, and honest negatives are deliverables.
+              Maintained by the Association for Clinical Quantum.
+            </P>
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      We value
+                    </th>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      Over
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CQM_VALUES.map((v) => (
+                    <tr key={v.value} className="border-t border-border">
+                      <td className="px-3 py-2 font-medium text-foreground">{v.value}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{v.over}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">The seven phases</h3>
+            <ol className="space-y-1.5 text-sm text-muted-foreground">
+              {CQM_PHASES.map((p, i) => (
+                <li key={p} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                    {i}
+                  </span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ol>
+            <P>
+              WardFlow ran the whole lifecycle in <strong>one day</strong>: toy-first gate →
+              six-backend receipts → F-VQE upgrade (0.1875 → 1.0000) → scale ladder
+              4q → 8q → 26q → 98q on the Helios Guppy/HUGR lane, with honest negatives
+              committed at every rung.
+            </P>
+            <blockquote className="mt-4 border-l-2 border-primary/50 pl-4 text-sm italic leading-relaxed text-foreground/90">
+              “Problem first — the tech comes afterwards. Workflow is most important so it
+              is reproducible for Quantinuum to use later. You may realise you don&apos;t
+              need quantum.”
+              <span className="mt-1 block not-italic text-xs text-muted-foreground">
+                — Quantinuum mentor, encoded in CQM as gates
+              </span>
+            </blockquote>
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              <strong>DPIA GREEN:</strong> synthetic dummy jobs only — no patient data
+              anywhere in the quantum layer.
+            </p>
+          </Card>
+
+          <Card>
+            <H2>References</H2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {REFERENCES.map((r) => (
+                <li key={r} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Source documents in the repo: <code>docs/QUANTUM_CARD.md</code>,{" "}
+              <code>docs/QUANTUM_SPOTLIGHT.md</code>,{" "}
+              <code>docs/clinical-quantum-methodology.md</code>.
+            </p>
+          </Card>
+
+
 
 
           <Card>
