@@ -1654,7 +1654,7 @@ q3: ──H────────────■──────────
             </blockquote>
           </Card>
 
-          <Card>
+          <Card id="backend-receipts">
             <H2>Backend receipts</H2>
             <div className="grid gap-2 sm:grid-cols-2">
               <Metric label="H1-1LE" value="0.1875 ✅" />
