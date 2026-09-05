@@ -241,31 +241,7 @@ export function JobRow({
         )}
       </div>
       {!showPatient && <CategoryTag category={job.category} />}
-      <DropdownMenu>
-        <DropdownMenuTrigger className="shrink-0 rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <StatusPill status={job.status} />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-52">
-          <DropdownMenuLabel className="text-xs">Set status</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "todo")}>To do</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "chase")}>
-            To chase
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "done")}>Done</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel className="text-xs">Add timing</DropdownMenuLabel>
-          {TIMINGS.map((t) => (
-            <DropdownMenuItem key={t} onClick={() => updateJob(job.id, { timing: t })}>
-              {t}
-            </DropdownMenuItem>
-          ))}
-          {job.timing && (
-            <DropdownMenuItem onClick={() => updateJob(job.id, { timing: undefined })}>
-              Clear timing
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {!mergedStatus && statusMenu}
     </div>
   );
 }
