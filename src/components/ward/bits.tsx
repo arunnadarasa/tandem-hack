@@ -27,9 +27,9 @@ export function NewsPill({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "inline-flex h-7 items-center justify-center rounded-md px-2 font-mono text-[11px] font-semibold tabular-nums",
-        tone === "high" && "bg-news-high/15 text-news-high ring-1 ring-news-high/40",
-        tone === "med" && "bg-news-med/15 text-news-med ring-1 ring-news-med/40",
+        "inline-flex h-7 items-center justify-center rounded-lg px-2.5 font-mono text-[11px] font-bold tabular-nums",
+        tone === "high" && "bg-news-high/18 text-news-high ring-1 ring-news-high/45 shadow-[0_0_18px_-8px_var(--news-high)]",
+        tone === "med" && "bg-news-med/16 text-news-med ring-1 ring-news-med/40",
         tone === "low" && "bg-news-low/12 text-news-low ring-1 ring-news-low/30",
       )}
       title={`NEWS ${score}`}
@@ -38,6 +38,7 @@ export function NewsPill({ score }: { score: number }) {
     </span>
   );
 }
+
 
 export function DoctorChip({
   doctor,
