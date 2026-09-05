@@ -44,7 +44,7 @@ function Index() {
 function Shell() {
   const { session, me, patients, endShift } = useWard();
   const [scope, setScope] = useState<"mine" | "ward">("mine");
-  const [view, setView] = useState<"patients" | "jobs">("patients");
+  const [view, setView] = useState<"patients" | "jobs">("jobs");
   const [filter, setFilter] = useState<JobCategory | "all">("all");
 
   const visible = useMemo(
