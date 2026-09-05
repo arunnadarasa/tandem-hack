@@ -1,8 +1,68 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Atom, ArrowLeft, ExternalLink } from "lucide-react";
+import { Atom, ArrowLeft, Download, ExternalLink } from "lucide-react";
+
+
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const SKILLS: {
+  name: string;
+  version: string;
+  summary: string;
+  tags: string[];
+  file: string;
+  github: string;
+}[] = [
+  {
+    name: "quantinuum",
+    version: "1.1.0",
+    summary:
+      "Write real quantum circuits in Python with @guppy, run shots on the Selene emulator, and cross-check offline with TKET — plus the healthcare triage kernels (QUBO, biomarker features, attestation) and the receipt discipline used on this page.",
+    tags: ["quantum", "guppy", "selene", "pytket", "quantinuum", "healthcare", "terminal"],
+    file: "/skills/quantinuum-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/quantinuum/SKILL.md",
+  },
+  {
+    name: "telegram-quantum-hermes",
+    version: "1.1.0",
+    summary:
+      "Run Nexus, Aqora and Marimo quantum jobs from Telegram through the unified Hermes runner and the /nexus slash dispatcher — backends, pathway, attestation, bench, status and jobs.",
+    tags: ["quantum", "telegram", "nexus", "aqora", "marimo", "terminal"],
+    file: "/skills/telegram-quantum-hermes-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/telegram-quantum-hermes/SKILL.md",
+  },
+];
+
+const INSTALL_LANES: { lane: string; steps: string[] }[] = [
+  {
+    lane: "Lovable",
+    steps: [
+      "Download the SKILL.md file.",
+      "Put it at .agents/skills/<skill-name>/SKILL.md in your project.",
+      "Activate it in Settings › Skills.",
+      "The frontmatter name and description are what make it load on the right task — keep them intact.",
+    ],
+  },
+  {
+    lane: "Hermes",
+    steps: [
+      "Download the file and keep its folder name.",
+      "Drop the folder into the agent's skills directory.",
+      "The metadata.hermes block already carries the tags, category and requires_toolsets: [terminal] that Hermes reads.",
+    ],
+  },
+  {
+    lane: "Telegram",
+    steps: [
+      "Install telegram-quantum-hermes on the agent behind the bot.",
+      "Drive it from chat: /nexus help, /nexus backends, /nexus pathway, /nexus attestation, /nexus bench, /nexus status <id>.",
+      "Plain-English mode proposes the qubits, shots and backend for you, then waits for a yes before submitting.",
+    ],
+  },
+];
 
 export const Route = createFileRoute("/quantum")({
   head: () => ({
@@ -1224,6 +1284,88 @@ q3: ──H────────────■──────────
           </Card>
 
 
+          <Card>
+            <H2>Take the skill with you</H2>
+            <P>
+              The two agent skills behind this work are downloadable here. Drop them into a
+              Lovable project, a Hermes agent, or a Telegram bot and the same discipline —
+              receipts, shot counts, pre-registered bars — comes with them.
+            </P>
+
+            <div className="mt-4 grid gap-3">
+              {SKILLS.map((s) => (
+                <div
+                  key={s.name}
+                  className="rounded-lg border border-border bg-surface/70 p-4"
+                >
+                  <div className="flex flex-wrap items-baseline gap-2">
+                    <p className="font-mono text-sm font-semibold text-foreground">
+                      {s.name}
+                    </p>
+                    <span className="font-mono text-xs text-primary">v{s.version}</span>
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">{s.summary}</p>
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {s.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <a href={s.file} download={`${s.name}-SKILL.md`}>
+                      <Button size="sm" className="gap-1.5">
+                        <Download className="h-4 w-4" />
+                        Download SKILL.md
+                      </Button>
+                    </a>
+                    <a
+                      href={s.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2"
+                    >
+                      View on GitHub
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Installing it</h3>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {INSTALL_LANES.map((lane) => (
+                <div
+                  key={lane.lane}
+                  className="rounded-lg border border-border bg-surface/70 p-3"
+                >
+                  <p className="mb-2 text-sm font-semibold text-foreground">{lane.lane}</p>
+                  <ol className="space-y-2 text-sm text-muted-foreground">
+                    {lane.steps.map((step, i) => (
+                      <li key={step} className="flex items-start gap-2">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                          {i + 1}
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              <strong>Cost and safety:</strong> zero-cost commands first (<code>help</code>,{" "}
+              <code>backends</code>, a local Selene smoke test). Emulator jobs are
+              quota-cheap but still need an explicit &ldquo;yes&rdquo; before anything is
+              submitted — the bot never fires a job on its own. Nothing in these skills is
+              clinical decision-making, and no quantum advantage is claimed.
+            </p>
+          </Card>
 
 
           <Card>
