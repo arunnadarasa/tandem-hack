@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Activity, LayoutList, Rows3, LogOut } from "lucide-react";
+import { Activity, Atom, LayoutList, Rows3, LogOut } from "lucide-react";
 
 import { CATEGORY_META, CATEGORY_ORDER, type JobCategory } from "@/lib/ward-data";
 import { CATEGORY_STYLE } from "@/components/ward/category-style";
