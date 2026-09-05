@@ -12,8 +12,11 @@ const SKILLS: {
   summary: string;
   tags: string[];
   file: string;
-  github: string;
+  github?: string;
+  note?: string;
+  extras?: { label: string; file: string }[];
 }[] = [
+
   {
     name: "quantinuum",
     version: "1.1.0",
