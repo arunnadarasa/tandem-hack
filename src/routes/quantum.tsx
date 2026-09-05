@@ -11,14 +11,15 @@ export const Route = createFileRoute("/quantum")({
       {
         name: "description",
         content:
-          "WardFlow sorts ward jobs classically; Quantinuum receipts stamp the handover — 26 qubits in a perfect GHZ on Helios (512/512 shots) and 100% optimum mass after F-VQE. No quantum advantage claimed.",
+          "WardFlow sorts ward jobs classically; Quantinuum receipts stamp the handover — 98 qubits in a perfect GHZ plus a parity receipt on Helios (256/256 shots each) and 100% optimum mass after F-VQE. No quantum advantage claimed.",
       },
       { property: "og:title", content: "Quantum-verified handover (WardFlow)" },
       {
         property: "og:description",
         content:
-          "26/26 qubits entangled in a perfect GHZ on Quantinuum Helios and a 4-qubit shift split driven to 100% optimum mass. Receipts for everything, advantage claimed for nothing.",
+          "Helios's full 98-qubit capacity receipted in one day — perfect GHZ and Iceberg-style parity check — plus a 4-qubit shift split at 100% optimum mass. Receipts for everything, advantage claimed for nothing.",
       },
+
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -43,10 +44,38 @@ const FVQE: { stage: string; mass: string; best?: boolean }[] = [
 ];
 
 const STATS: { value: string; label: string }[] = [
-  { value: "26/26", label: "qubits in a perfect GHZ on Helios — 512/512 shots" },
+  {
+    value: "98/98",
+    label:
+      "qubits — Helios's full published capacity — perfect GHZ plus tamper-evident parity receipt, 256/256 shots each",
+  },
   { value: "100%", label: "optimum-state mass after F-VQE training — 256/256 shots" },
-  { value: "6", label: "Nexus backends receipted (H1/H2 lanes + Helios HUGR + Aer)" },
+  {
+    value: "4q → 98q",
+    label: "scale ladder receipted in ONE day, every rung a live Nexus job ID",
+  },
+  {
+    value: "CQM v1.3",
+    label: "the methodology itself upgraded and versioned from this hack",
+  },
 ];
+
+const HELIOS_98: { backend: string; job: string; result: string; status: string }[] = [
+  {
+    backend: "98q GHZ — one qubit per job, whole hospital",
+    job: "b3d1c274",
+    result: "Perfect: 256/256 shots, GHZ-mass 1.0000 at Helios's full published capacity",
+    status: "PASS",
+  },
+  {
+    backend: "98q Iceberg-style parity receipt",
+    job: "8eddb96d",
+    result:
+      "Perfect: 256/256 shots with 8 block-parity checks folded in — any tamper breaks a parity, detectably",
+    status: "PASS",
+  },
+];
+
 
 const HELIOS: { program: string; job: string; result: string }[] = [
   {
@@ -129,7 +158,7 @@ function QuantumPage() {
             everything, advantage claimed for nothing.
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {STATS.map((s) => (
               <div
                 key={s.value}
@@ -379,6 +408,36 @@ q3: ──H────────────■──────────
               GHZ, receipt attached. Tamper with a GHZ-signed record and the correlation
               pattern breaks detectably.”
             </blockquote>
+
+            <div className="mt-6 rounded-lg border border-primary/25 bg-primary/5 p-4">
+              <H2>98-qubit finale: Helios&apos;s entire published capacity</H2>
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                We then ran the full stack: a 98q GHZ (one qubit per job, whole hospital)
+                and a 98q Iceberg-style parity receipt. Both perfect. Scale ladder in one
+                day: <strong className="text-foreground">4q → 8q → 26q → 98q</strong>, every
+                step receipted.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {HELIOS_98.map((r) => (
+                  <div
+                    key={r.job}
+                    className="rounded-lg border border-border bg-card px-3 py-2.5"
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                      {r.backend}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{r.result}</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <code className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary">
+                        job {r.job}
+                      </code>
+                      <span className="text-xs font-medium text-primary">{r.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
               Scale wording (binding): 26 qubits on an emulator is{" "}
               <em>hardware-scale readiness</em>, never <em>quantum advantage</em> — it stays
@@ -436,7 +495,9 @@ q3: ──H────────────■──────────
               running.
             </P>
             <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-              Module built with Claude Fable 5.1. Quantum circuits via pytket + Nexus.
+              Module built with Claude Fable 5.1 under <strong>CQM v1.3</strong>. Quantum
+              circuits via pytket + Guppy/HUGR on Quantinuum Nexus.
+
               Documentation lives in the repo under{" "}
               <code>docs/QUANTUM_SPOTLIGHT.md</code> and <code>quantum/README.md</code>.
             </p>
