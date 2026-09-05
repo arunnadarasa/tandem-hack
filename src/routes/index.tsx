@@ -128,7 +128,7 @@ function Shell() {
 
       <div className="mx-auto max-w-7xl px-4 py-5">
         {view === "patients" ? (
-          <PatientBoard patients={visible} />
+          <PatientBoard patients={visible} scope={scope} />
         ) : (
           <JobsBoard patients={visible} filter={filter} />
         )}

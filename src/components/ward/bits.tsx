@@ -27,14 +27,14 @@ export function NewsPill({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "inline-flex h-7 w-9 items-center justify-center rounded-md font-mono text-sm font-semibold tabular-nums",
+        "inline-flex h-7 items-center justify-center rounded-md px-2 font-mono text-[11px] font-semibold tabular-nums",
         tone === "high" && "bg-news-high/15 text-news-high ring-1 ring-news-high/40",
         tone === "med" && "bg-news-med/15 text-news-med ring-1 ring-news-med/40",
         tone === "low" && "bg-news-low/12 text-news-low ring-1 ring-news-low/30",
       )}
       title={`NEWS ${score}`}
     >
-      {score}
+      NEWS{score}
     </span>
   );
 }
