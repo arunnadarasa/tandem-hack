@@ -443,7 +443,197 @@ q3: ──H────────────■──────────
               <em>hardware-scale readiness</em>, never <em>quantum advantage</em> — it stays
               classically simulable. Advantage is a pre-registered future claim.
             </p>
+
+          <Card>
+            <H2>Quantum model card (v1.0)</H2>
+            <P>
+              Structured per Everitt &amp; Ji, <em>Model Cards for Quantum Technologies
+              Reporting</em> (arXiv:2412.13151), crossed with the NVIDIA verified-skill
+              template — quantum transparency and agent-skill trust in one card.
+            </P>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {CARD_FIELDS.map((f) => (
+                <Metric key={f.label} label={f.label} value={f.value} />
+              ))}
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Intended use</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {INTENDED_USE.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold text-destructive">
+              Out of scope
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {OUT_OF_SCOPE.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Trust controls</h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {TRUST.map((t) => (
+                <Metric key={t.label} label={t.label} value={t.value} />
+              ))}
+            </div>
           </Card>
+
+          <Card>
+            <H2>Every circuit, every receipt</H2>
+            <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[560px] text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["Circuit", "Qubits", "Backend(s)", "Job ID", "Result", "Verdict"].map(
+                      (h) => (
+                        <th
+                          key={h}
+                          className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                        >
+                          {h}
+                        </th>
+                      ),
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {CIRCUITS.map((c) => (
+                    <tr key={c.job} className="border-t border-border align-top">
+                      <td className="px-3 py-2">{c.circuit}</td>
+                      <td className="px-3 py-2 font-mono">{c.qubits}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{c.backend}</td>
+                      <td className="px-3 py-2 font-mono text-xs">{c.job}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{c.result}</td>
+                      <td
+                        className={cn(
+                          "px-3 py-2 text-xs font-semibold",
+                          c.pass ? "text-primary" : "text-muted-foreground",
+                        )}
+                      >
+                        {c.verdict}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Job IDs are Nexus references, listed as text — the Nexus console needs an
+              authenticated account.
+            </p>
+          </Card>
+
+          <Card>
+            <H2>Evaluation conditions &amp; limitations</H2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {EVALUATION.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Limitations &amp; risks</h3>
+            <ol className="space-y-2 text-sm text-muted-foreground">
+              {LIMITATIONS.map((t, i) => (
+                <li key={t} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                    {i + 1}
+                  </span>
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ol>
+          </Card>
+
+          <Card>
+            <H2>Clinical Quantum Methodology (CQM v1.3)</H2>
+            <P>
+              <strong>Problem first, quantum second.</strong> Workflow is the product,
+              quantum is optional augmentation, and honest negatives are deliverables.
+              Maintained by the Association for Clinical Quantum.
+            </P>
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      We value
+                    </th>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      Over
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CQM_VALUES.map((v) => (
+                    <tr key={v.value} className="border-t border-border">
+                      <td className="px-3 py-2 font-medium text-foreground">{v.value}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{v.over}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">The seven phases</h3>
+            <ol className="space-y-1.5 text-sm text-muted-foreground">
+              {CQM_PHASES.map((p, i) => (
+                <li key={p} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                    {i}
+                  </span>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ol>
+            <P>
+              WardFlow ran the whole lifecycle in <strong>one day</strong>: toy-first gate →
+              six-backend receipts → F-VQE upgrade (0.1875 → 1.0000) → scale ladder
+              4q → 8q → 26q → 98q on the Helios Guppy/HUGR lane, with honest negatives
+              committed at every rung.
+            </P>
+            <blockquote className="mt-4 border-l-2 border-primary/50 pl-4 text-sm italic leading-relaxed text-foreground/90">
+              “Problem first — the tech comes afterwards. Workflow is most important so it
+              is reproducible for Quantinuum to use later. You may realise you don&apos;t
+              need quantum.”
+              <span className="mt-1 block not-italic text-xs text-muted-foreground">
+                — Quantinuum mentor, encoded in CQM as gates
+              </span>
+            </blockquote>
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              <strong>DPIA GREEN:</strong> synthetic dummy jobs only — no patient data
+              anywhere in the quantum layer.
+            </p>
+          </Card>
+
+          <Card>
+            <H2>References</H2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {REFERENCES.map((r) => (
+                <li key={r} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Source documents in the repo: <code>docs/QUANTUM_CARD.md</code>,{" "}
+              <code>docs/QUANTUM_SPOTLIGHT.md</code>,{" "}
+              <code>docs/clinical-quantum-methodology.md</code>.
+            </p>
+          </Card>
+
+
 
 
           <Card>
