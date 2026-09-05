@@ -5,14 +5,24 @@ import { AREAS, type Job, type Patient } from "@/lib/ward-data";
 import { useWard } from "@/lib/ward-store";
 import { cn } from "@/lib/utils";
 import { DoctorChip, DoneDrawer, JobRow, NewsPill, sortJobs } from "./bits";
-import { CATEGORY_STYLE } from "./category-style";
 
-export function PatientBoard({ patients }: { patients: Patient[] }) {
+export function PatientBoard({
+  patients,
+  scope,
+}: {
+  patients: Patient[];
+  scope: "mine" | "ward";
+}) {
   const { jobs } = useWard();
   const areas = useMemo(
     () => AREAS.map((a) => ({ area: a, list: patients.filter((p) => p.area === a) })).filter((g) => g.list.length),
     [patients],
   );
+
+  const showDoctor = scope === "ward";
+  const gridCols = showDoctor
+    ? "grid-cols-[3rem_1fr_2rem_4.5rem_8rem_1.5rem]"
+    : "grid-cols-[3rem_1fr_4.5rem_8rem_1.5rem]";
 
   return (
     <div className="space-y-6">
@@ -26,14 +36,18 @@ export function PatientBoard({ patients }: { patients: Patient[] }) {
             </span>
           </h2>
           <div className="overflow-hidden rounded-xl border border-border bg-card">
-            <div className="flex items-center gap-3 border-b border-border bg-accent/40 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <span className="w-11 shrink-0 text-center">Bed</span>
-              <span className="min-w-0 flex-1">Patient</span>
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center">Dr</span>
-              <span className="flex h-7 w-9 shrink-0 items-center justify-center">NEWS</span>
-              <span className="hidden shrink-0 items-center sm:flex">Jobs</span>
-              <span className="flex w-32 shrink-0 items-center justify-end">Status</span>
-              <span className="h-4 w-4 shrink-0" />
+            <div
+              className={cn(
+                "grid items-center gap-3 border-b border-border bg-accent/40 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+                gridCols,
+              )}
+            >
+              <span className="text-center">Bed</span>
+              <span>Patient</span>
+              {showDoctor && <span className="text-center">Dr</span>}
+              <span className="text-center">NEWS</span>
+              <span className="text-right">Status</span>
+              <span />
             </div>
             {list.map((p, i) => (
               <PatientRow
@@ -41,6 +55,8 @@ export function PatientBoard({ patients }: { patients: Patient[] }) {
                 patient={p}
                 jobs={jobs.filter((j) => j.patientId === p.id)}
                 first={i === 0}
+                showDoctor={showDoctor}
+                gridCols={gridCols}
               />
             ))}
           </div>
@@ -55,7 +71,19 @@ export function PatientBoard({ patients }: { patients: Patient[] }) {
   );
 }
 
-function PatientRow({ patient, jobs, first }: { patient: Patient; jobs: Job[]; first: boolean }) {
+function PatientRow({
+  patient,
+  jobs,
+  first,
+  showDoctor,
+  gridCols,
+}: {
+  patient: Patient;
+  jobs: Job[];
+  first: boolean;
+  showDoctor: boolean;
+  gridCols: string;
+}) {
   const { doctorById, session } = useWard();
   const [open, setOpen] = useState(false);
   const doctor = doctorById(patient.doctorId);
@@ -77,12 +105,15 @@ function PatientRow({ patient, jobs, first }: { patient: Patient; jobs: Job[]; f
             setOpen((o) => !o);
           }
         }}
-        className="flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-accent/50"
+        className={cn(
+          "grid w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-accent/50",
+          gridCols,
+        )}
       >
-        <span className="w-11 shrink-0 rounded-md bg-primary py-1.5 text-center font-mono text-xs font-bold text-primary-foreground">
+        <span className="rounded-md bg-primary py-1.5 text-center font-mono text-xs font-bold text-primary-foreground">
           {patient.bed}
         </span>
-        <span className="min-w-0 flex-1">
+        <span className="min-w-0">
           <span className="flex items-baseline gap-2">
             <span className="truncate text-sm font-semibold">{patient.name}</span>
             <span className="text-xs text-muted-foreground">
@@ -95,28 +126,9 @@ function PatientRow({ patient, jobs, first }: { patient: Patient; jobs: Job[]; f
           </span>
           <span className="block truncate text-xs text-muted-foreground">{patient.summary}</span>
         </span>
-        <DoctorChip doctor={doctor} isMe={isMe} />
+        {showDoctor && <DoctorChip doctor={doctor} isMe={isMe} />}
         <NewsPill score={patient.news} />
-        <span className="hidden shrink-0 items-center gap-1 sm:flex">
-          {[...new Set([...todo, ...chase].map((j) => j.category))].map((c) => {
-            const Icon = CATEGORY_STYLE[c].icon;
-            const n = [...todo, ...chase].filter((j) => j.category === c).length;
-            return (
-              <span
-                key={c}
-                title={`${n} ${c}`}
-                className={cn(
-                  "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold",
-                  CATEGORY_STYLE[c].soft,
-                )}
-              >
-                <Icon className="h-3 w-3" />
-                {n}
-              </span>
-            );
-          })}
-        </span>
-        <span className="flex w-32 shrink-0 items-center justify-end gap-1.5 text-xs">
+        <span className="flex shrink-0 items-center justify-end gap-1.5 text-xs">
           {todo.length > 0 && (
             <span className="rounded-full bg-todo/15 px-2 py-0.5 font-semibold text-todo ring-1 ring-todo/30">
               {todo.length} to do
@@ -133,7 +145,7 @@ function PatientRow({ patient, jobs, first }: { patient: Patient; jobs: Job[]; f
         </span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
+            "h-4 w-4 shrink-0 justify-self-end text-muted-foreground transition-transform",
             open && "rotate-180",
           )}
         />
