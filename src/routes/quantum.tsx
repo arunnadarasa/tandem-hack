@@ -63,6 +63,21 @@ const HELIOS: { program: string; job: string; result: string }[] = [
   },
 ];
 
+const HELIOS_RECEIPTS: { backend: string; job: string; result: string; status?: string }[] = [
+  {
+    backend: "Helios-1E-lite (HUGR)",
+    job: "0fc1f87b",
+    result: "512/512 shots, GHZ-mass 1.0000 — 2 outcomes from 67M states",
+    status: "PASS",
+  },
+  {
+    backend: "Helios-1E-lite (HUGR)",
+    job: "67f9d2f4",
+    result: "Mean cut 43.61 vs 43.05 uniform; explores, doesn't concentrate",
+    status: "HONEST",
+  },
+];
+
 const HONESTY = [
   "Small circuit (4 qubits, 10 edges) — a hackathon toy.",
   "5 of 6 backends receipted (Aer fixed via AerConfig); sv1 is an honest gap (needs an AWS bucket).",
@@ -326,6 +341,32 @@ q3: ──H────────────■──────────
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 rounded-lg border border-border bg-surface/70 p-4">
+              <H2>Helios backend receipts</H2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {HELIOS_RECEIPTS.map((r) => (
+                  <div
+                    key={r.job}
+                    className="rounded-lg border border-border bg-card px-3 py-2.5"
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                      {r.backend}
+                    </p>
+                    <p className="mt-1 font-mono text-sm font-semibold text-foreground">
+                      {r.result}
+                    </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <code className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary">
+                        job {r.job}
+                      </code>
+                      <span className="text-xs font-medium text-primary">{r.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <P>
               <strong>Why judges should care:</strong> the Helios runtime supports real-time
               classical compute in-loop (mid-circuit measurement, qubit reuse — published at
