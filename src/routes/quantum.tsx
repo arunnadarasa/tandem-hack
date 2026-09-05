@@ -854,7 +854,7 @@ q3: ──H────────────■──────────
             </P>
           </Card>
 
-          <Card>
+          <Card id="live-receipts">
             <H2>Live Nexus receipts (6 backends)</H2>
             <P>
               256 shots on the H1-1LE emulator, job <code>7f8ad56f</code>:
