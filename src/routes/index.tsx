@@ -58,7 +58,7 @@ function Shell() {
   if (!session) return <SetupScreen />;
 
   return (
-    <main className="min-h-screen bg-surface pb-16">
+    <main className="min-h-screen bg-surface">
       <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-2.5">
           <div className="flex items-center gap-2">
@@ -97,6 +97,12 @@ function Shell() {
               patients={visible}
               scope={scope === "mine" ? `${me?.initials} patients` : session.ward.split(" — ")[0]!}
             />
+            <Button size="sm" variant="outline" asChild className="gap-1.5 border-primary/30 text-primary hover:bg-primary/10">
+              <Link to="/quantum">
+                <Atom className="h-4 w-4" />
+                Quantum
+              </Link>
+            </Button>
             <Button size="sm" variant="ghost" onClick={endShift} title="End shift">
               <LogOut className="h-4 w-4" />
             </Button>
@@ -134,13 +140,6 @@ function Shell() {
         )}
       </div>
 
-      <Link
-        to="/quantum"
-        className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-gradient-to-r from-primary/20 to-primary/10 px-4 py-2 text-sm font-semibold text-primary shadow-lg backdrop-blur transition-all hover:scale-105 hover:shadow-primary/20"
-      >
-        <Atom className="h-4 w-4" />
-        Quantum
-      </Link>
     </main>
   );
 }
