@@ -1623,7 +1623,7 @@ q3: ──H────────────■──────────
 
 
 
-          <Card>
+          <Card id="honesty">
             <H2>The honesty footnote</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {HONESTY.map((h) => (
