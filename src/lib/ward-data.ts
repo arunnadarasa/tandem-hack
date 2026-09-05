@@ -214,7 +214,7 @@ export function buildWard() {
         age: 42 + Math.floor(rand() * 50),
         sex: rand() > 0.5 ? "F" : "M",
         area,
-        bed: `B${bedNum}`,
+        bed: `${area.replace("Bay ", "")}${i + 1}`,
         news,
         summary: SUMMARIES[Math.floor(rand() * SUMMARIES.length)] ?? "Medical inpatient",
         doctorId: null,

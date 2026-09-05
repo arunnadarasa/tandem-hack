@@ -153,7 +153,7 @@ function PatientRow({
       {open && (
         <div className="space-y-1.5 border-t border-border bg-surface/70 px-2.5 py-2.5">
           {sortJobs([...todo, ...chase]).map((j) => (
-            <JobRow key={j.id} job={j} inlineStatus />
+            <JobRow key={j.id} job={j} />
           ))}
           {todo.length + chase.length === 0 && (
             <p className="px-2 py-1 text-xs text-muted-foreground">No outstanding jobs.</p>
