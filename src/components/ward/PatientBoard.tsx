@@ -26,6 +26,15 @@ export function PatientBoard({ patients }: { patients: Patient[] }) {
             </span>
           </h2>
           <div className="overflow-hidden rounded-xl border border-border bg-card">
+            <div className="flex items-center gap-3 border-b border-border bg-accent/40 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="w-11 shrink-0 text-center">Bed</span>
+              <span className="min-w-0 flex-1">Patient</span>
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center">Dr</span>
+              <span className="flex h-7 w-9 shrink-0 items-center justify-center">NEWS</span>
+              <span className="hidden shrink-0 items-center sm:flex">Jobs</span>
+              <span className="flex w-32 shrink-0 items-center justify-end">Status</span>
+              <span className="h-4 w-4 shrink-0" />
+            </div>
             {list.map((p, i) => (
               <PatientRow
                 key={p.id}
