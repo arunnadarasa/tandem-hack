@@ -1,5 +1,64 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Atom, ArrowLeft, ExternalLink } from "lucide-react";
+import { Atom, ArrowLeft, Download, ExternalLink } from "lucide-react";
+
+const SKILLS: {
+  name: string;
+  version: string;
+  summary: string;
+  tags: string[];
+  file: string;
+  github: string;
+}[] = [
+  {
+    name: "quantinuum",
+    version: "1.1.0",
+    summary:
+      "Write real quantum circuits in Python with @guppy, run shots on the Selene emulator, and cross-check offline with TKET — plus the healthcare triage kernels (QUBO, biomarker features, attestation) and the receipt discipline used on this page.",
+    tags: ["quantum", "guppy", "selene", "pytket", "quantinuum", "healthcare", "terminal"],
+    file: "/skills/quantinuum-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/quantinuum/SKILL.md",
+  },
+  {
+    name: "telegram-quantum-hermes",
+    version: "1.1.0",
+    summary:
+      "Run Nexus, Aqora and Marimo quantum jobs from Telegram through the unified Hermes runner and the /nexus slash dispatcher — backends, pathway, attestation, bench, status and jobs.",
+    tags: ["quantum", "telegram", "nexus", "aqora", "marimo", "terminal"],
+    file: "/skills/telegram-quantum-hermes-SKILL.md",
+    github:
+      "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/telegram-quantum-hermes/SKILL.md",
+  },
+];
+
+const INSTALL_LANES: { lane: string; steps: string[] }[] = [
+  {
+    lane: "Lovable",
+    steps: [
+      "Download the SKILL.md file.",
+      "Put it at .agents/skills/<skill-name>/SKILL.md in your project.",
+      "Activate it in Settings › Skills.",
+      "The frontmatter name and description are what make it load on the right task — keep them intact.",
+    ],
+  },
+  {
+    lane: "Hermes",
+    steps: [
+      "Download the file and keep its folder name.",
+      "Drop the folder into the agent's skills directory.",
+      "The metadata.hermes block already carries the tags, category and requires_toolsets: [terminal] that Hermes reads.",
+    ],
+  },
+  {
+    lane: "Telegram",
+    steps: [
+      "Install telegram-quantum-hermes on the agent behind the bot.",
+      "Drive it from chat: /nexus help, /nexus backends, /nexus pathway, /nexus attestation, /nexus bench, /nexus status <id>.",
+      "Plain-English mode proposes the qubits, shots and backend for you, then waits for a yes before submitting.",
+    ],
+  },
+];
+
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
