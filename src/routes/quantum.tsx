@@ -1635,7 +1635,7 @@ q3: ──H────────────■──────────
             </ul>
           </Card>
 
-          <Card>
+          <Card id="demo">
             <H2>Demo script (2 minutes)</H2>
             <ol className="space-y-2 text-sm text-muted-foreground">
               {DEMO.map((d, i) => (
