@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type Context,
+  type ReactNode,
+} from "react";
 
 import {
   buildWard,
@@ -48,7 +56,10 @@ type Ctx = {
   doctorById: (id: string | null) => Doctor | undefined;
 };
 
-const WardContext = createContext<Ctx | null>(null);
+// Keep a single context instance across hot reloads / split chunks, otherwise
+// the provider and consumers can end up on different context objects.
+const g = globalThis as unknown as { __wardContext?: Context<Ctx | null> };
+const WardContext = (g.__wardContext ??= createContext<Ctx | null>(null));
 
 const seed = buildWard();
 
