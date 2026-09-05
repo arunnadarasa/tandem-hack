@@ -394,10 +394,18 @@ q3: ──H────────────■──────────
             </div>
             <P>
               Scale-up: 8 qubits at p=2 done four times over (mean cut beats uniform,
-              optimum mass tiny — an honest negative). 26 qubits on H2-1LE and Helios HUGR
-              are running. Quantum circuits via pytket + Nexus.
+              optimum mass tiny — an honest negative). 26q GHZ on Helios is{" "}
+              <strong>perfect — 512/512 shots, GHZ-mass 1.0</strong>; 26q QAOA mean cut
+              43.61 vs 43.05 uniform (explores; F-VQE is the fix). H2-1LE cross-check
+              running.
             </P>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Module built with Claude Fable 5.1. Quantum circuits via pytket + Nexus.
+              Documentation lives in the repo under{" "}
+              <code>docs/QUANTUM_SPOTLIGHT.md</code> and <code>quantum/README.md</code>.
+            </p>
           </Card>
+
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <a
