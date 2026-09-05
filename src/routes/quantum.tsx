@@ -1,7 +1,7 @@
+import * as React from "react";
+
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Atom, ArrowLeft, Download, ExternalLink } from "lucide-react";
-
-
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -641,13 +641,96 @@ const SYNERGY: { direction: string; points: string[] }[] = [
     ],
   },
 ];
+const SECTIONS = [
+  { id: "problem", label: "Problem" },
+  { id: "plain-english", label: "Plain English" },
+  { id: "4q-maxcut", label: "4-qubit split" },
+  { id: "live-receipts", label: "Receipts" },
+  { id: "f-vqe", label: "F-VQE" },
+  { id: "helios", label: "Helios" },
+  { id: "model-card", label: "Model card" },
+  { id: "circuits", label: "Circuits" },
+  { id: "evaluation", label: "Evaluation" },
+  { id: "clinical-safety", label: "Safety" },
+  { id: "skills", label: "Skills" },
+  { id: "cqm", label: "CQM" },
+  { id: "references", label: "References" },
+  { id: "honesty", label: "Honesty" },
+  { id: "demo", label: "Demo" },
+  { id: "backend-receipts", label: "Backends" },
+];
 
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = React.useState<string>(ids[0] ?? "");
+  const jumpingRef = React.useRef<number>(0);
 
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (Date.now() < jumpingRef.current) return;
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-5% 0px -85% 0px", threshold: 0 }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
 
+  const jumpTo = React.useCallback((id: string) => {
+    setActive(id);
+    jumpingRef.current = Date.now() + 800;
+    if (id === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
+  return { active, jumpTo };
+}
 
+function JumpNav({ active, jumpTo }: { active: string; jumpTo: (id: string) => void }) {
+  return (
+    <nav className="panel sticky top-4 z-30 mb-6 rounded-2xl p-2">
+      <div
+        className="flex gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => jumpTo(s.id)}
+            className={cn(
+              "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+              active === s.id
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-primary/30 bg-primary/10 text-primary hover:bg-accent/50",
+            )}
+          >
+            {s.label}
+          </button>
+        ))}
+        <button
+          onClick={() => jumpTo("top")}
+          className="shrink-0 rounded-full border border-border bg-surface/70 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent/50"
+        >
+          Top
+        </button>
+      </div>
+    </nav>
+  );
+}
 
 function QuantumPage() {
+  const { active, jumpTo } = useActiveSection(SECTIONS.map((s) => s.id));
   return (
     <main className="app-canvas min-h-screen px-4 py-8 text-foreground">
       <div className="mx-auto max-w-3xl">
@@ -703,10 +786,10 @@ function QuantumPage() {
           </div>
         </header>
 
-
+        <JumpNav active={active} jumpTo={jumpTo} />
 
         <section className="space-y-6">
-          <Card>
+          <Card id="problem">
             <H2>The problem: where jobs get lost in handovers</H2>
             <P>
               Junior doctors lose ward-round time <strong>criss-crossing</strong> bays and
@@ -723,7 +806,7 @@ function QuantumPage() {
             </p>
           </Card>
 
-          <Card>
+          <Card id="plain-english">
             <H2>In plain English</H2>
             <P>WardFlow decides. Quantum signs the receipt.</P>
             <div className="mt-4 space-y-3">
@@ -748,7 +831,7 @@ function QuantumPage() {
 
 
 
-          <Card>
+          <Card id="4q-maxcut">
             <H2>4 qubits → NOW/NEXT split (Max-Cut)</H2>
             <P>
               Four high-impact jobs become four qubits, on a weighted ring: J0–J1, J1–J2,
@@ -777,7 +860,7 @@ q3: ──H────────────■──────────
             </P>
           </Card>
 
-          <Card>
+          <Card id="live-receipts">
             <H2>Live Nexus receipts (6 backends)</H2>
             <P>
               256 shots on the H1-1LE emulator, job <code>7f8ad56f</code>:
@@ -838,7 +921,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="f-vqe">
             <H2>F-VQE upgrade: every shot on the optimum</H2>
             <P>
               We then applied <strong>Quantinuum&apos;s own published scheduling method</strong>{" "}
@@ -898,7 +981,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="helios">
             <H2>Helios: the whole ward on the next-gen stack</H2>
             <P>
               We scaled from 4 jobs to the <strong>whole ward: 26 jobs = 26 qubits</strong>,
@@ -1003,7 +1086,7 @@ q3: ──H────────────■──────────
 
 
 
-          <Card>
+          <Card id="model-card">
             <H2>Quantum model card (v1.0)</H2>
             <P>
               Structured per Everitt &amp; Ji, <em>Model Cards for Quantum Technologies
@@ -1046,7 +1129,7 @@ q3: ──H────────────■──────────
             </div>
           </Card>
 
-          <Card>
+          <Card id="circuits">
             <H2>Every circuit, every receipt</H2>
             <div className="mt-4 overflow-x-auto rounded-lg border border-border">
               <table className="w-full min-w-[560px] text-sm">
@@ -1091,7 +1174,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="evaluation">
             <H2>Evaluation conditions &amp; limitations</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {EVALUATION.map((t) => (
@@ -1114,7 +1197,7 @@ q3: ──H────────────■──────────
             </ol>
           </Card>
 
-          <Card>
+          <Card id="clinical-safety">
             <H2>Quantum Digital Clinical Safety</H2>
             <P>
               NHS digital health is assured through <strong>clinical safety cases</strong> —
@@ -1352,7 +1435,7 @@ q3: ──H────────────■──────────
           </Card>
 
 
-          <Card>
+          <Card id="skills">
             <H2>Take the skill with you</H2>
             <P>
               The agent skills behind this work are downloadable here — the quantum lanes and
@@ -1465,7 +1548,7 @@ q3: ──H────────────■──────────
           </Card>
 
 
-          <Card>
+          <Card id="cqm">
             <H2>Clinical Quantum Methodology (CQM v1.3)</H2>
             <P>
               <strong>Problem first, quantum second.</strong> Workflow is the product,
@@ -1526,7 +1609,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="references">
             <H2>References</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {REFERENCES.map((r) => (
@@ -1546,7 +1629,7 @@ q3: ──H────────────■──────────
 
 
 
-          <Card>
+          <Card id="honesty">
             <H2>The honesty footnote</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {HONESTY.map((h) => (
@@ -1558,7 +1641,7 @@ q3: ──H────────────■──────────
             </ul>
           </Card>
 
-          <Card>
+          <Card id="demo">
             <H2>Demo script (2 minutes)</H2>
             <ol className="space-y-2 text-sm text-muted-foreground">
               {DEMO.map((d, i) => (
@@ -1577,7 +1660,7 @@ q3: ──H────────────■──────────
             </blockquote>
           </Card>
 
-          <Card>
+          <Card id="backend-receipts">
             <H2>Backend receipts</H2>
             <div className="grid gap-2 sm:grid-cols-2">
               <Metric label="H1-1LE" value="0.1875 ✅" />
@@ -1625,8 +1708,12 @@ q3: ──H────────────■──────────
   );
 }
 
-function Card({ children }: { children: React.ReactNode }) {
-  return <div className="panel lift rounded-2xl p-6">{children}</div>;
+function Card({ id, children }: { id?: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className="panel lift scroll-mt-28 rounded-2xl p-6">
+      {children}
+    </section>
+  );
 }
 
 function H2({ children }: { children: React.ReactNode }) {
