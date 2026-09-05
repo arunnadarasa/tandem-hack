@@ -1,6 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Atom, ArrowLeft, Download, ExternalLink } from "lucide-react";
 
+
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
 const SKILLS: {
   name: string;
   version: string;
@@ -58,10 +63,6 @@ const INSTALL_LANES: { lane: string; steps: string[] }[] = [
     ],
   },
 ];
-
-
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/quantum")({
   head: () => ({
