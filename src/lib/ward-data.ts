@@ -3,6 +3,7 @@ export type JobCategory =
   | "imaging"
   | "review"
   | "referral"
+  | "prescribing"
   | "discharge"
   | "tto"
   | "communication";
@@ -21,6 +22,11 @@ export const CATEGORY_META: Record<
   imaging: { label: "Imaging", short: "Imaging", hint: "Ordering and chasing scans" },
   review: { label: "Clinical reviews", short: "Review", hint: "Unwell patients, high NEWS" },
   referral: { label: "Referrals", short: "Referral", hint: "Discussions with other specialties" },
+  prescribing: {
+    label: "Prescribing",
+    short: "Rx",
+    hint: "New meds, fluids, VTE, warfarin, antibiotic reviews",
+  },
   discharge: { label: "Discharge letters", short: "Discharge", hint: "Discharge summaries" },
   tto: { label: "TTOs", short: "TTO", hint: "To take out medications" },
   communication: {
@@ -35,6 +41,7 @@ export const CATEGORY_ORDER: JobCategory[] = [
   "imaging",
   "review",
   "referral",
+  "prescribing",
   "discharge",
   "tto",
   "communication",
