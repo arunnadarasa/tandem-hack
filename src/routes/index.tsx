@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Activity, LayoutList, Rows3, LogOut } from "lucide-react";
 
 import { CATEGORY_META, CATEGORY_ORDER, type JobCategory } from "@/lib/ward-data";
+import { CATEGORY_STYLE } from "@/components/ward/category-style";
 import { WardProvider, useWard } from "@/lib/ward-store";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -107,11 +108,20 @@ function Shell() {
             <FilterChip active={filter === "all"} onClick={() => setFilter("all")}>
               All jobs
             </FilterChip>
-            {CATEGORY_ORDER.map((c) => (
-              <FilterChip key={c} active={filter === c} onClick={() => setFilter(c)}>
-                {CATEGORY_META[c].label}
-              </FilterChip>
-            ))}
+            {CATEGORY_ORDER.map((c) => {
+              const Icon = CATEGORY_STYLE[c].icon;
+              return (
+                <FilterChip
+                  key={c}
+                  active={filter === c}
+                  onClick={() => setFilter(c)}
+                  tone={CATEGORY_STYLE[c]}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {CATEGORY_META[c].label}
+                </FilterChip>
+              );
+            })}
           </div>
         )}
       </header>
@@ -161,19 +171,26 @@ function FilterChip({
   active,
   onClick,
   children,
+  tone,
 }: {
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  tone?: { soft: string; text: string };
 }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3 py-1 text-xs transition-colors",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
         active
-          ? "border-primary bg-primary/10 font-medium text-primary"
-          : "border-border bg-background text-muted-foreground hover:bg-accent",
+          ? tone
+            ? cn("border-transparent", tone.soft)
+            : "border-transparent bg-primary/15 text-primary ring-1 ring-primary/40"
+          : cn(
+              "border-border bg-card text-muted-foreground hover:bg-accent hover:text-foreground",
+              tone && `hover:${tone.text}`,
+            ),
       )}
     >
       {children}

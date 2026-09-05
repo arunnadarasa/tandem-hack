@@ -1,4 +1,4 @@
-import { Clock, ChevronDown } from "lucide-react";
+import { Clock, ChevronDown, Check, Circle, Hourglass } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/lib/ward-data";
 import { useWard } from "@/lib/ward-store";
 import { cn } from "@/lib/utils";
+import { CATEGORY_STYLE } from "./category-style";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import {
   DropdownMenu,
@@ -85,9 +86,40 @@ export function StatusDot({ status }: { status: JobStatus }) {
 }
 
 export function CategoryTag({ category }: { category: Job["category"] }) {
+  const style = CATEGORY_STYLE[category];
+  const Icon = style.icon;
   return (
-    <span className="rounded border border-border bg-surface px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+        style.soft,
+      )}
+      title={CATEGORY_META[category].label}
+    >
+      <Icon className="h-3 w-3" />
       {CATEGORY_META[category].short}
+    </span>
+  );
+}
+
+const STATUS_STYLE: Record<JobStatus, { label: string; cls: string; icon: typeof Check }> = {
+  todo: { label: "To do", cls: "bg-todo/15 text-todo ring-1 ring-todo/40", icon: Circle },
+  chase: { label: "To chase", cls: "bg-chase/15 text-chase ring-1 ring-chase/40", icon: Hourglass },
+  done: { label: "Done", cls: "bg-done/15 text-done ring-1 ring-done/40", icon: Check },
+};
+
+export function StatusPill({ status }: { status: JobStatus }) {
+  const s = STATUS_STYLE[status];
+  const Icon = s.icon;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold",
+        s.cls,
+      )}
+    >
+      <Icon className="h-3 w-3" />
+      {s.label}
     </span>
   );
 }
@@ -130,11 +162,25 @@ export function JobRow({
   return (
     <div
       className={cn(
-        "group flex items-start gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-accent/60",
-        job.status === "done" && "opacity-60",
+        "group flex items-start gap-2.5 rounded-lg border-l-[3px] bg-surface/50 px-2.5 py-2 transition-colors hover:bg-accent/50",
+        CATEGORY_STYLE[job.category].border,
+        job.status === "done" && "opacity-55",
       )}
     >
-      <StatusDot status={job.status} />
+      <button
+        type="button"
+        aria-label={job.status === "done" ? "Mark as to do" : "Mark as done"}
+        title={job.status === "done" ? "Mark as to do" : "Mark as done"}
+        onClick={() => setJobStatus(job.id, job.status === "done" ? "todo" : "done")}
+        className={cn(
+          "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
+          job.status === "done"
+            ? "border-done bg-done text-background"
+            : "border-border text-transparent hover:border-done hover:text-done",
+        )}
+      >
+        <Check className="h-3.5 w-3.5" />
+      </button>
       <div className="min-w-0 flex-1">
         {showPatient && patient && (
           <div className="mb-0.5 flex items-center gap-2">
@@ -166,9 +212,8 @@ export function JobRow({
       </div>
       {!showPatient && <CategoryTag category={job.category} />}
       <DropdownMenu>
-        <DropdownMenuTrigger className="inline-flex shrink-0 items-center gap-1 rounded border border-border bg-card px-2 py-1 text-[11px] font-medium capitalize hover:bg-accent">
-          {job.status === "todo" ? "To do" : job.status === "chase" ? "To chase" : "Done"}
-          <ChevronDown className="h-3 w-3" />
+        <DropdownMenuTrigger className="shrink-0 rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <StatusPill status={job.status} />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuLabel className="text-xs">Set status</DropdownMenuLabel>

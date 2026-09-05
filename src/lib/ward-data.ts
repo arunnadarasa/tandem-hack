@@ -3,6 +3,7 @@ export type JobCategory =
   | "imaging"
   | "review"
   | "referral"
+  | "prescribing"
   | "discharge"
   | "tto"
   | "communication";
@@ -21,6 +22,11 @@ export const CATEGORY_META: Record<
   imaging: { label: "Imaging", short: "Imaging", hint: "Ordering and chasing scans" },
   review: { label: "Clinical reviews", short: "Review", hint: "Unwell patients, high NEWS" },
   referral: { label: "Referrals", short: "Referral", hint: "Discussions with other specialties" },
+  prescribing: {
+    label: "Prescribing",
+    short: "Rx",
+    hint: "New meds, fluids, VTE, warfarin, antibiotic reviews",
+  },
   discharge: { label: "Discharge letters", short: "Discharge", hint: "Discharge summaries" },
   tto: { label: "TTOs", short: "TTO", hint: "To take out medications" },
   communication: {
@@ -35,6 +41,7 @@ export const CATEGORY_ORDER: JobCategory[] = [
   "imaging",
   "review",
   "referral",
+  "prescribing",
   "discharge",
   "tto",
   "communication",
@@ -157,10 +164,22 @@ const JOB_SEEDS: Seed[] = [
   { c: "communication", t: "Call GP for collateral history", s: "chase" },
 ];
 
+const PRESCRIBING_SEEDS: Seed[] = [
+  { c: "prescribing", t: "Prescribe IV fluids — 1L Hartmann's over 8h", s: "todo" },
+  { c: "prescribing", t: "Antibiotic review — day 3 IV to oral switch", s: "todo", time: "Before 12:00" },
+  { c: "prescribing", t: "Chart VTE prophylaxis — enoxaparin 40mg", s: "todo" },
+  { c: "prescribing", t: "Warfarin dose after today's INR", s: "chase", d: "INR pending from lab" },
+  { c: "prescribing", t: "Stop nephrotoxics — hold ramipril in AKI", s: "todo" },
+  { c: "prescribing", t: "Prescribe analgesia — regular paracetamol + PRN oramorph", s: "todo" },
+  { c: "prescribing", t: "Rewrite drug chart — chart full", s: "todo" },
+  { c: "prescribing", t: "Prescribe potassium replacement — K 3.1", s: "todo", time: "Before 11:00" },
+];
+
 const DONE_SEEDS: Seed[] = [
   { c: "bedside", t: "Bloods taken", s: "done" },
   { c: "imaging", t: "CXR requested", s: "done" },
   { c: "tto", t: "TTO written and signed", s: "done" },
+  { c: "prescribing", t: "Drug chart rewritten", s: "done" },
   { c: "communication", t: "Spoke to son, updated", s: "done" },
 ];
 
@@ -210,6 +229,18 @@ export function buildWard() {
         const seed = JOB_SEEDS[k]!;
         jobs.push({
           id: `${id}-j${j}`,
+          patientId: id,
+          category: seed.c,
+          title: seed.t,
+          status: seed.s,
+          ...(seed.d ? { detail: seed.d } : {}),
+          ...(seed.time ? { timing: seed.time } : {}),
+        });
+      }
+      if (rand() > 0.55) {
+        const seed = PRESCRIBING_SEEDS[Math.floor(rand() * PRESCRIBING_SEEDS.length)]!;
+        jobs.push({
+          id: `${id}-jp`,
           patientId: id,
           category: seed.c,
           title: seed.t,
