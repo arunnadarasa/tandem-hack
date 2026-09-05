@@ -702,6 +702,7 @@ const SECTIONS = [
   { id: "evaluation", label: "Evaluation" },
   { id: "clinical-safety", label: "Safety" },
   { id: "post-quantum", label: "Post-quantum" },
+  { id: "quantum-origin", label: "Quantum Origin" },
   { id: "skills", label: "Skills" },
   { id: "cqm", label: "CQM" },
   { id: "references", label: "References" },
