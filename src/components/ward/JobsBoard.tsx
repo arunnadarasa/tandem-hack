@@ -4,6 +4,7 @@ import { CATEGORY_META, CATEGORY_ORDER, type JobCategory, type Patient } from "@
 import { useWard } from "@/lib/ward-store";
 import { cn } from "@/lib/utils";
 import { DoneDrawer, JobRow, sortJobs } from "./bits";
+import { CATEGORY_STYLE } from "./category-style";
 
 export function JobsBoard({
   patients,
@@ -28,16 +29,44 @@ export function JobsBoard({
         const list = scoped.filter((j) => j.category === cat);
         const open = sortJobs(list.filter((j) => j.status !== "done"));
         const done = list.filter((j) => j.status === "done");
+        const style = CATEGORY_STYLE[cat];
+        const Icon = style.icon;
         return (
-          <section key={cat} className="rounded-xl border border-border bg-card">
-            <header className="flex items-baseline justify-between border-b border-border px-3 py-2">
-              <div>
-                <h2 className="text-sm font-semibold">{CATEGORY_META[cat].label}</h2>
-                <p className="text-[11px] text-muted-foreground">{CATEGORY_META[cat].hint}</p>
+          <section
+            key={cat}
+            className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+          >
+            <header
+              className={cn(
+                "flex items-center gap-2.5 border-b border-border px-3 py-2.5",
+                "bg-linear-to-r from-card to-card",
+              )}
+              style={{ backgroundColor: `color-mix(in oklab, var(--cat-${cat}) 10%, var(--card))` }}
+            >
+              <span
+                className={cn(
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
+                  style.soft,
+                )}
+              >
+                <Icon className="h-4 w-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className={cn("text-sm font-bold", style.text)}>{CATEGORY_META[cat].label}</h2>
+                <p className="truncate text-[11px] text-muted-foreground">
+                  {CATEGORY_META[cat].hint}
+                </p>
               </div>
-              <span className="font-mono text-xs text-muted-foreground">{open.length}</span>
+              <span
+                className={cn(
+                  "flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 font-mono text-xs font-bold",
+                  open.length ? style.soft : "text-muted-foreground",
+                )}
+              >
+                {open.length}
+              </span>
             </header>
-            <div className="p-1.5">
+            <div className="flex flex-col gap-1.5 p-2">
               {open.map((j) => (
                 <JobRow key={j.id} job={j} showPatient />
               ))}
