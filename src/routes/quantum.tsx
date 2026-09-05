@@ -410,6 +410,55 @@ const REFERENCES = [
   "Niroula et al., arXiv:2511.03689 — Helios 98-qubit real-time execution.",
   "Quantinuum H2 and Helios product data sheets — hardware numbers, never invented.",
   "Oskrochi Y & Grimes K, CSC-QT: a quality assessment tool for DCB0129/DCB0160 clinical safety cases, BMJ Innovations (2026), doi 10.1136/bmjinnov-2026-001660 — clinical safety review structure.",
+  "NCSC, Post-quantum cryptography migration timelines (2025) — the 2028/2031/2035 clock for UK critical national infrastructure.",
+  "NCSC, Next steps in preparing for post-quantum cryptography v2.0 (Aug 2024) — harvest-now-decrypt-later and the recommended algorithms.",
+  "NIST FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIPS 205 (SLH-DSA) — the standardised post-quantum algorithms.",
+  "Google Keyword blog, Adkins & Schmieg, post-quantum migration timeline 2029 — an accelerated industry target.",
+  "HM Treasury / G7 Cyber Expert Group, Advancing a coordinated roadmap for the transition to post-quantum cryptography in the financial sector (Jan 2026).",
+  "OpenAI, Hugging Face incident and the road ahead (Aug 2026), with CNBC and MIT Technology Review reporting — agentic cyber capability.",
+  "NIHR, £1.65 m invested across 17 early-stage quantum health technology projects (Jul 2026).",
+];
+
+const PQC_AUTHORITIES: { who: string; position: string }[] = [
+  {
+    who: "NCSC — PQC migration timelines",
+    position:
+      "UK organisations: discovery and migration plan by 2028, highest-priority migrations by 2031, full migration by 2035. Aimed at critical national infrastructure — which includes the NHS.",
+  },
+  {
+    who: "NCSC — Next steps in preparing for PQC",
+    position:
+      "A cryptographically-relevant quantum computer breaks RSA, ECDH and ECDSA. \u201charvest now, decrypt later\u201d makes long-lived high-value data a today problem — and few datasets are longer-lived than health records. Recommended: ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205).",
+  },
+  {
+    who: "Google — 2029 migration timeline",
+    position:
+      "Accelerated its own target to 2029, six years ahead of the NCSC completion date, citing progress in error correction and falling quantum-factoring resource estimates.",
+  },
+  {
+    who: "HM Treasury / G7 Cyber Expert Group (Jan 2026)",
+    position:
+      "A G7-coordinated post-quantum roadmap for finance — the template healthcare regulators are likely to follow.",
+  },
+];
+
+const PQC_ROADMAP: { done: string; next: string }[] = [
+  {
+    done: "Quantum execution receipts with job IDs and envelopes (4q → 98q)",
+    next: "ML-DSA-signed receipt JSONs (FIPS 204, via a maintained PQC library)",
+  },
+  {
+    done: "98q Iceberg-style parity receipt — tamper-evidence structure",
+    next: "SLH-DSA long-lived root key for the receipt chain",
+  },
+  {
+    done: "Quantum entropy pipeline demo (job 02c3ec84, honest emulator caveat)",
+    next: "Certified entropy source (QPU / Quantum Origin) feeding ML-KEM keygen",
+  },
+  {
+    done: "Agent guardrails: consent gates, skill constitutions, secret scans",
+    next: "NCSC-style discovery inventory for WardFlow's own (tiny) crypto estate",
+  },
 ];
 
 const LIFECYCLE: { label: string; value: string }[] = [
