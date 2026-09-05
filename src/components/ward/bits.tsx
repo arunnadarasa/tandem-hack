@@ -149,10 +149,12 @@ export function JobRow({
   job,
   showPatient = false,
   compact = false,
+  mergedStatus = false,
 }: {
   job: Job;
   showPatient?: boolean;
   compact?: boolean;
+  mergedStatus?: boolean;
 }) {
   const { setJobStatus, updateJob, patientById } = useWard();
   const patient = patientById(job.patientId);
