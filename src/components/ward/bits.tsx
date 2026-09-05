@@ -191,14 +191,18 @@ export function JobRow({
             <NewsMini score={patient.news} />
           </div>
         )}
-        <p
-          className={cn(
-            "text-sm leading-snug",
-            job.status === "done" && "line-through decoration-muted-foreground",
-          )}
-        >
-          {job.title}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p
+            className={cn(
+              "text-sm leading-snug",
+              job.status === "done" && "line-through decoration-muted-foreground",
+            )}
+          >
+            {job.title}
+          </p>
+          {mergedStatus && statusMenu}
+        </div>
+
         {(job.detail || job.timing) && !compact && (
           <p className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {job.timing && (
