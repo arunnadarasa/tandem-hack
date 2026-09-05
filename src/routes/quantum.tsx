@@ -641,11 +641,46 @@ const SYNERGY: { direction: string; points: string[] }[] = [
     ],
   },
 ];
+const SECTIONS = [
+  { id: "problem", label: "Problem" },
+  { id: "plain-english", label: "Plain English" },
+  { id: "4q-maxcut", label: "4-qubit split" },
+  { id: "live-receipts", label: "Receipts" },
+  { id: "f-vqe", label: "F-VQE" },
+  { id: "helios", label: "Helios" },
+  { id: "model-card", label: "Model card" },
+  { id: "circuits", label: "Circuits" },
+  { id: "evaluation", label: "Evaluation" },
+  { id: "clinical-safety", label: "Safety" },
+  { id: "skills", label: "Skills" },
+  { id: "cqm", label: "CQM" },
+  { id: "references", label: "References" },
+  { id: "honesty", label: "Honesty" },
+  { id: "demo", label: "Demo" },
+  { id: "backend-receipts", label: "Backends" },
+];
 
-
-
-
-
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = React.useState<string>(ids[0] ?? "");
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+  return active;
+}
 
 function QuantumPage() {
   return (
