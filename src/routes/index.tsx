@@ -55,8 +55,6 @@ function Shell() {
     [scope, session, patients],
   );
 
-  if (!session) return <SetupScreen />;
-
   const stats = useMemo(() => {
     const ids = new Set(visible.map((p) => p.id));
     const list = jobs.filter((j) => ids.has(j.patientId));
@@ -68,6 +66,10 @@ function Shell() {
       news: visible.reduce((m, p) => Math.max(m, p.news), 0),
     };
   }, [visible, jobs]);
+
+  if (!session) return <SetupScreen />;
+
+
 
   return (
     <main className="app-canvas min-h-screen">
