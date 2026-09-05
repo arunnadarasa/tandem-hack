@@ -443,6 +443,9 @@ q3: ──H────────────■──────────
               <em>hardware-scale readiness</em>, never <em>quantum advantage</em> — it stays
               classically simulable. Advantage is a pre-registered future claim.
             </p>
+          </Card>
+
+
 
           <Card>
             <H2>Quantum model card (v1.0)</H2>
