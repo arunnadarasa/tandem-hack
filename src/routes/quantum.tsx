@@ -825,7 +825,7 @@ function QuantumPage() {
 
 
 
-          <Card>
+          <Card id="4q-maxcut">
             <H2>4 qubits → NOW/NEXT split (Max-Cut)</H2>
             <P>
               Four high-impact jobs become four qubits, on a weighted ring: J0–J1, J1–J2,
