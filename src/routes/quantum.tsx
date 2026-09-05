@@ -690,6 +690,86 @@ const SYNERGY: { direction: string; points: string[] }[] = [
     ],
   },
 ];
+const QO_PIPELINE: { step: string; detail: string }[] = [
+  {
+    step: "1. Quantum computer + system model",
+    detail:
+      "An H2-series trapped-ion quantum computer runs the randomness generation under a characterised system model, so its output can be reasoned about rather than merely measured.",
+  },
+  {
+    step: "2. Bell test → proven lower bound",
+    detail:
+      "A Bell test on that output yields a mathematically proven lower bound on min-entropy. This is the step no classical or conventional hardware QRNG can offer: proof at the point of generation instead of statistics at the output.",
+  },
+  {
+    step: "3. Refinement → Quantum Seed",
+    detail:
+      "Refinement turns the raw certified output into a Quantum Seed. Because its quality is proven, the seed can be public and never needs rotating.",
+  },
+  {
+    step: "4. Randomness extractor on your own device",
+    detail:
+      "On the customer's device, a strong randomness extractor combines the public Quantum Seed with a private local randomness stream and produces near-perfect private randomness that feeds existing key generation — no live connection to a quantum computer required.",
+  },
+];
+
+const QO_FIT: { title: string; body: string }[] = [
+  {
+    title: "Software-only, so it fits an NHS estate",
+    body:
+      "No extra appliance, no HSM purchase, no continuous link to quantum hardware. It deploys as a standalone software module alongside what is already running, which is the only realistic shape for a trust service inside a hospital deployment.",
+  },
+  {
+    title: "A public seed that never needs rotating",
+    body:
+      "The Quantum Seed carries no secrecy requirement and no rotation schedule, which suits a long-lived receipt-signing service that has to keep verifying handovers years after they were signed.",
+  },
+  {
+    title: "It targets a weakness we have already logged",
+    body:
+      "Our entropy demonstration today is emulator PRNG output — an open hazard on this page. Weak entropy is exactly what breaks signature schemes in practice: lattice attacks on biased ECDSA nonces, and the KeyFactor finding that 1 in 172 public RSA certificates carries a key breakable classically, largely from insufficient entropy at key generation.",
+  },
+];
+
+const QO_BOUNDARY: string[] = [
+  "Not integrated. There is no Quantum Origin licence, no Quantum Origin key material and no Quantum Origin receipt anywhere in this build.",
+  "The entropy figures on this page (job 02c3ec84, 512 shots, 222 distinct states, min-entropy 6.19 of 8 bits) remain emulator PRNG output. They demonstrate pipeline shape, not certified randomness.",
+  "No \"quantum-safe\" or \"provably random\" badge appears on any surface until a real integration is running and independently verifiable.",
+  "Adopting it changes the key-generation path, so it would need its own hazard review and safety case entry before it goes anywhere near a live handover.",
+];
+
+const QO_LANES: { lane: string; use: string }[] = [
+  { lane: "CLI", use: "Scripted or one-off generation during development and testing." },
+  {
+    lane: "SDK",
+    use:
+      "Called directly from application code on Linux, Windows or macOS — the lane that would suit a receipt-signing service.",
+  },
+  { lane: "Linux Reseed", use: "Reseeds the operating system entropy pool on Linux hosts." },
+  { lane: "Windows Reseed", use: "The same for Windows hosts, headless or GUI install." },
+  { lane: "HSM Reseed", use: "Strengthens key material inside an existing hardware security module." },
+];
+
+const QO_SOURCES: { label: string; url: string }[] = [
+  {
+    label:
+      "Quantum Origin — Beyond Statistical Testing: From Hope to Certainty in Cryptographic Randomness (white paper)",
+    url: "https://cdn.prod.website-files.com/669960f53cd73aedb80c8eea/68e6630bf74d4f7c8809bc7f_Quantum%20Origin%20-%20Beyond%20Statistical%20Testing%20White%20Paper%5B71%5D.pdf",
+  },
+  {
+    label: "Quantum Origin — Technical White Paper (r03)",
+    url: "https://cdn.prod.website-files.com/669960f53cd73aedb80c8eea/66da564bce3f80e2827db453_6670683dc0f4a03b3ac9def3_quantum-origin-technical-whitepaper_r03.pdf",
+  },
+  {
+    label: "Quantum Origin — Product Sheet",
+    url: "https://cdn.prod.website-files.com/669960f53cd73aedb80c8eea/66da56383525014ab3cc707c_6627e2261acba15b5fcf5119_Quantum%20Origin%20-%20Product%20Sheet%201%20(1).pdf",
+  },
+  {
+    label: "Quantinuum docs — Quantum Origin user guides, Introduction",
+    url: "https://docs.quantinuum.com/origin/user_guides/introduction/summary.html",
+  },
+];
+
 const SECTIONS = [
   { id: "problem", label: "Problem" },
   { id: "plain-english", label: "Plain English" },
