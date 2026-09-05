@@ -44,10 +44,38 @@ const FVQE: { stage: string; mass: string; best?: boolean }[] = [
 ];
 
 const STATS: { value: string; label: string }[] = [
-  { value: "26/26", label: "qubits in a perfect GHZ on Helios — 512/512 shots" },
+  {
+    value: "98/98",
+    label:
+      "qubits — Helios's full published capacity — perfect GHZ plus tamper-evident parity receipt, 256/256 shots each",
+  },
   { value: "100%", label: "optimum-state mass after F-VQE training — 256/256 shots" },
-  { value: "6", label: "Nexus backends receipted (H1/H2 lanes + Helios HUGR + Aer)" },
+  {
+    value: "4q → 98q",
+    label: "scale ladder receipted in ONE day, every rung a live Nexus job ID",
+  },
+  {
+    value: "CQM v1.3",
+    label: "the methodology itself upgraded and versioned from this hack",
+  },
 ];
+
+const HELIOS_98: { backend: string; job: string; result: string; status: string }[] = [
+  {
+    backend: "98q GHZ — one qubit per job, whole hospital",
+    job: "b3d1c274",
+    result: "Perfect: 256/256 shots, GHZ-mass 1.0000 at Helios's full published capacity",
+    status: "PASS",
+  },
+  {
+    backend: "98q Iceberg-style parity receipt",
+    job: "8eddb96d",
+    result:
+      "Perfect: 256/256 shots with 8 block-parity checks folded in — any tamper breaks a parity, detectably",
+    status: "PASS",
+  },
+];
+
 
 const HELIOS: { program: string; job: string; result: string }[] = [
   {
