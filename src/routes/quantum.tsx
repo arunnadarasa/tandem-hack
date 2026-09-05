@@ -158,7 +158,7 @@ function QuantumPage() {
             everything, advantage claimed for nothing.
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {STATS.map((s) => (
               <div
                 key={s.value}
