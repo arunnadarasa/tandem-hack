@@ -7,17 +7,17 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/quantum")({
   head: () => ({
     meta: [
-      { title: "Quantum-verified handover — WardFlow" },
+      { title: "Quantum-verified handover (WardFlow)" },
       {
         name: "description",
         content:
-          "How WardFlow uses a tiny quantum job to stamp a tamper-evident receipt on the ward handover, without changing the classical decision-making.",
+          "WardFlow sorts ward jobs classically; a 4-qubit Max-Cut QAOA on Quantinuum Nexus stamps a tamper-evident receipt on the handover. No quantum advantage claimed.",
       },
-      { property: "og:title", content: "Quantum-verified handover — WardFlow" },
+      { property: "og:title", content: "Quantum-verified handover (WardFlow)" },
       {
         property: "og:description",
         content:
-          "A 4-qubit Max-Cut QAOA toy on Quantinuum Nexus that signs the ward handover as a live, checkable receipt.",
+          "A 4-qubit Max-Cut QAOA on Quantinuum Nexus certifies the NOW/NEXT shift split with a real, checkable receipt.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -25,6 +25,32 @@ export const Route = createFileRoute("/quantum")({
   }),
   component: QuantumPage,
 });
+
+const COUNTS: { state: string; count: number; optimal?: boolean }[] = [
+  { state: "0001", count: 46 },
+  { state: "1111", count: 41 },
+  { state: "0000", count: 36 },
+  { state: "1110", count: 35 },
+  { state: "0101", count: 23, optimal: true },
+  { state: "1010", count: 25, optimal: true },
+];
+
+const HONESTY = [
+  "Small circuit (4 qubits, 10 edges) — a hackathon toy.",
+  "5 of 6 backends receipted (Aer fixed via AerConfig); sv1 is an honest gap (needs an AWS bucket).",
+  "8 qubits at p=2: mean sampled cut beats uniform on all 4 backends, but optimum mass is tiny — an honest negative.",
+  "26 qubits is 'hardware-scale readiness', never 'quantum advantage' — it is still classically simulable.",
+  "The classical sort stays the decision-maker.",
+  "No quantum advantage claimed — this is a tamper-evident seal, not a classifier.",
+];
+
+const DEMO = [
+  "“WardFlow decides.”",
+  "Jobs list, status colours, handover export.",
+  "The 4-qubit circuit — edges are walking and conflict weights.",
+  "H1-1LE receipts: optimum mass 0.19 vs 0.125 uniform.",
+  "Live demo: pick 4 jobs, show the shift split, copy the Nexus job link.",
+];
 
 function QuantumPage() {
   return (
@@ -42,115 +68,179 @@ function QuantumPage() {
         <header className="mb-8">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <Atom className="h-3.5 w-3.5" />
-            Hackathon showcase
+            Quantum capability layer
           </div>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Quantum-verified handover
+            WardFlow sorts the jobs{" "}
+            <span className="text-primary">classically</span> — quantum stamps a
+            tamper-evident receipt for handover.
           </h1>
-          <p className="mt-2 text-lg text-muted-foreground">
-            WardFlow decides. Quantum signs the receipt.
+          <p className="mt-3 text-lg text-muted-foreground">
+            A 4-qubit Max-Cut QAOA on Quantinuum Nexus certifies this shift split with a
+            real, checkable fingerprint. No advantage claimed; the job reference below is
+            a live Nexus link.
           </p>
         </header>
 
         <section className="space-y-6">
           <Card>
-            <h2 className="mb-3 text-lg font-semibold">What this means in plain English</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              The ward round board still sorts patients and jobs the normal way — fast,
-              explainable, and entirely classical. Nothing about the clinical decision
-              changes.
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              The quantum layer is a tiny, tamper-evident stamp. Think of it like a
-              notary seal on the handover envelope: it proves the list was agreed at a
-              specific moment and cannot be quietly edited afterwards. The incoming
-              shift can check the receipt instead of relying on memory.
-            </p>
-          </Card>
-
-          <Card>
-            <h2 className="mb-3 text-lg font-semibold">The toy example</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Imagine four outstanding jobs at the end of a shift:
-            </p>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-bedside" />
-                <span>Bedside bloods</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-imaging" />
-                <span>Imaging request</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-review" />
-                <span>Clinical review for a high NEWS score</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-referral" />
-                <span>Referral to another specialty</span>
-              </li>
-            </ul>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              We want to split them into a <strong>NOW</strong> shift and a{" "}
-              <strong>NEXT</strong> shift so the most conflicting pairs land in different
-              shifts. That conflict puzzle is a classic computer-science problem called
-              Max-Cut. Here it is encoded as a 4-qubit circuit and sent to Quantinuum
-              Nexus.
+            <H2>The problem: where jobs get lost in handovers</H2>
+            <P>
+              Junior doctors lose ward-round time <strong>criss-crossing</strong> bays and
+              chasing jobs. WardFlow fixes the sorting — free-text plans become a job
+              list, status-checked, filtered, handheld.
+            </P>
+            <P>
+              But handovers are where jobs get <strong>lost</strong>. The outgoing shift{" "}
+              <em>remembers</em> what was agreed. The incoming shift can&apos;t{" "}
+              <em>prove</em> it.
+            </P>
+            <p className="mt-3 text-sm font-semibold text-primary">
+              Quantum provides the proof.
             </p>
           </Card>
 
           <Card>
-            <h2 className="mb-3 text-lg font-semibold">The 4-qubit circuit</h2>
-            <p className="mb-3 text-sm text-muted-foreground">
-              Each qubit represents one job. A measurement of <code>0</code> means "do it
-              now"; <code>1</code> means "do it next shift". The circuit is a QAOA with
-              p=1, angles γ=0.5 and β=0.4 (in halfturns).
-            </p>
+            <H2>4 qubits → NOW/NEXT split (Max-Cut)</H2>
+            <P>
+              Four high-impact jobs become four qubits, on a weighted ring: J0–J1, J1–J2,
+              J2–J3, J3–J0, with cross-bay chords. The goal is to{" "}
+              <strong>maximise separated conflict</strong> — if J0 blocks J3, they stay in
+              different shifts (NOW vs NEXT).
+            </P>
             <pre
               className={cn(
-                "overflow-x-auto rounded-lg border border-border bg-black/40 p-4 font-mono text-xs leading-relaxed",
+                "mt-4 overflow-x-auto rounded-lg border border-border bg-black/40 p-4 font-mono text-xs leading-relaxed",
                 "text-foreground/90",
               )}
             >
 {`q0: ──H──■ZZ(1.5)────────────■ZZ(1.0)──Rx(0.4)──M
          │                    │
 q1: ──H──■──────■ZZ(0.5)──────┼─────────Rx(0.4)──M
-                  │           │
-q2: ──H──────────■──■ZZ(2.0)──┼─────────Rx(0.4)──M
-                     │        │
-q3: ──H─────────────■─────────■─────────Rx(0.4)──M`}
+                │             │
+q2: ──H─────────■──■ZZ(2.0)───┼─────────Rx(0.4)──M
+                   │          │
+q3: ──H────────────■──────────■─────────Rx(0.4)──M`}
             </pre>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Edges (conflict weights): J0–J1 = 3, J1–J2 = 1, J2–J3 = 4, J3–J0 = 2.
-            </p>
+            <P>
+              Classical optimum: <strong>cut = 10</strong>, states <code>0101</code> or{" "}
+              <code>1010</code> (brute-force verified). QAOA p=1 angles are unoptimised
+              and the optimal patterns rank #5/#6 — honest, not claimed.
+            </P>
           </Card>
 
           <Card>
-            <h2 className="mb-3 text-lg font-semibold">Live receipt from Quantinuum Nexus</h2>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <H2>Live Nexus receipts (H1-1LE pass)</H2>
+            <P>
+              256 shots on the H1-1LE emulator, job <code>7f8ad56f</code>:
+            </P>
+            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
+                      State
+                    </th>
+                    <th className="px-3 py-2 text-right text-[11px] uppercase tracking-wider">
+                      Count
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COUNTS.map((r) => (
+                    <tr key={r.state} className="border-t border-border">
+                      <td
+                        className={cn(
+                          "px-3 py-1.5 font-mono",
+                          r.optimal && "font-semibold text-primary",
+                        )}
+                      >
+                        {r.state}
+                        {r.optimal && (
+                          <span className="ml-2 text-[11px] font-normal uppercase tracking-wider">
+                            optimum
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-3 py-1.5 text-right font-mono">{r.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Metric label="Backend" value="H1-1LE emulator" />
               <Metric label="Shots" value="256" />
-              <Metric label="Best patterns" value="0101, 1010" />
-              <Metric label="Optimum mass" value="0.19" />
-              <Metric label="Random guessing" value="0.125" />
+              <Metric label="Optimum mass" value="18.75%" />
+              <Metric label="Uniform baseline" value="12.5%" />
+              <Metric label="Envelope 4√(0.5/256)" value="≈ 0.088" />
               <Metric label="Verdict" value="PASS" highlight />
             </div>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              The two best answers appeared 19% of the time, well above the 12.5% you
-              would expect from random guessing. That fingerprint is tied to this exact
-              handover and stored as a receipt.
+
+            <a
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4"
+              href="https://qnexus.nexus.quantumcomputing.co.uk/jobs/7f8ad56f"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View job 7f8ad56f on Nexus
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              Technical note: the job runs on the <strong>hardware-qualified</strong>{" "}
+              simulator H1-1LE, not a QPU. The receipt is execution integrity — not a
+              speed or accuracy advantage.
             </p>
           </Card>
 
           <Card>
-            <h2 className="mb-3 text-lg font-semibold">Honesty footnote</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              This is intentionally a toy problem with synthetic dummy jobs. No patient
-              data, NHS numbers, or clinical details ever touch the quantum layer. No
-              speed or accuracy advantage over a classical computer is claimed. Quantum
-              here is a verification seal, not the decision-maker.
-            </p>
+            <H2>The honesty footnote</H2>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {HONESTY.map((h) => (
+                <li key={h} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <Card>
+            <H2>Demo script (2 minutes)</H2>
+            <ol className="space-y-2 text-sm text-muted-foreground">
+              {DEMO.map((d, i) => (
+                <li key={d} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-[11px] font-semibold text-primary">
+                    {i + 1}
+                  </span>
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ol>
+            <blockquote className="mt-4 border-l-2 border-primary/50 pl-4 text-sm italic leading-relaxed text-foreground/90">
+              “The ward plan is made classically, exactly as today. Then a tiny quantum job
+              on Quantinuum&apos;s stack signs it, giving the next shift a receipt nobody
+              can fake. Small circuit, real receipt, honest claim.”
+            </blockquote>
+          </Card>
+
+          <Card>
+            <H2>Backend receipts</H2>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Metric label="H1-1LE" value="0.1875 ✅" />
+              <Metric label="H2-1LE" value="0.1367 ✅" />
+              <Metric label="H1-Em" value="0.1523 ✅" />
+              <Metric label="H2-Em" value="0.1680 ✅" />
+              <Metric label="Aer" value="0.125 ✅ (uniform, honest)" />
+              <Metric label="sv1" value="⚠️ gap" />
+            </div>
+            <P>
+              Scale-up: 8 qubits at p=2 done four times over (mean cut beats uniform,
+              optimum mass tiny — an honest negative). 26 qubits on H2-1LE and Helios HUGR
+              are running. Quantum circuits via pytket + Nexus.
+            </P>
           </Card>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -176,10 +266,16 @@ q3: ──H─────────────■─────────
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-      {children}
-    </div>
+    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">{children}</div>
   );
+}
+
+function H2({ children }: { children: React.ReactNode }) {
+  return <h2 className="mb-3 text-lg font-semibold">{children}</h2>;
+}
+
+function P({ children }: { children: React.ReactNode }) {
+  return <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{children}</p>;
 }
 
 function Metric({
