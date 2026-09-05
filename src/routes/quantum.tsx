@@ -291,7 +291,44 @@ const REFERENCES = [
   "Jin, He, Amaro et al., arXiv:2504.21172 — Iceberg parity-check pattern.",
   "Niroula et al., arXiv:2511.03689 — Helios 98-qubit real-time execution.",
   "Quantinuum H2 and Helios product data sheets — hardware numbers, never invented.",
+  "Oskrochi Y & Grimes K, CSC-QT: a quality assessment tool for DCB0129/DCB0160 clinical safety cases, BMJ Innovations (2026), doi 10.1136/bmjinnov-2026-001660 — clinical safety review structure.",
 ];
+
+const CSC_DOMAINS: { domain: string; evidence: string }[] = [
+  {
+    domain: "1. Scope and context",
+    evidence:
+      "Named owner and accountable author, versioned model card (v1.0), the system explicitly identified as the WardFlow Quantum Capability Layer, and the deployment context stated as a hackathon build on emulators only.",
+  },
+  {
+    domain: "2. Hazard identification and structure",
+    evidence:
+      "An honest-negatives register rather than a highlight reel: unoptimised QAOA explores instead of concentrating, the 98-qubit lane is Clifford-only, and the sv1 backend is a recorded gap. Each is a named limitation, not buried in prose.",
+  },
+  {
+    domain: "3. Risk assessment",
+    evidence:
+      "An uncertainty envelope of 4·√(0.5/shots) applied to every probability claim (0.088 at 256 shots), with the classical baseline stated per run so a reader can judge the margin themselves.",
+  },
+  {
+    domain: "4. Controls and evidence",
+    evidence:
+      "Every claim carries a job ID and shot count. The controls are the pre-registered pass bar, fixed seeds (11/31), pinned packages, and a submit journal so job IDs survive process death.",
+  },
+  {
+    domain: "5. Safety argument",
+    evidence:
+      "The binding conclusion: the classical sort remains the decision-maker, the quantum layer is a tamper-evident seal, and no clinical or quantum-advantage claim is made anywhere.",
+  },
+];
+
+const SAFETY_POSITION = [
+  "DPIA GREEN — synthetic dummy jobs only; no patient data enters the quantum layer at any point.",
+  "Out of scope for clinical decision-making. Nothing here is a device function, and no diagnostic or triage claim is made.",
+  "Not a deployed system, so no live DCB0160 safety case is claimed for it.",
+  "The quantum receipts are execution-integrity evidence — the kind of artefact a hazard log's evidence column would reference. They do not by themselves discharge any DCB duty.",
+];
+
 
 
 
