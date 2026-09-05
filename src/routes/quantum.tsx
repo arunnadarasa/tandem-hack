@@ -1123,7 +1123,7 @@ q3: ──H────────────■──────────
             </div>
           </Card>
 
-          <Card>
+          <Card id="circuits">
             <H2>Every circuit, every receipt</H2>
             <div className="mt-4 overflow-x-auto rounded-lg border border-border">
               <table className="w-full min-w-[560px] text-sm">
