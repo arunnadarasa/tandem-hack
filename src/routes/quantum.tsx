@@ -363,6 +363,31 @@ function QuantumPage() {
           </Card>
 
           <Card>
+            <H2>In plain English</H2>
+            <P>WardFlow decides. Quantum signs the receipt.</P>
+            <div className="mt-4 space-y-3">
+              {PLAIN.map((p) => (
+                <div
+                  key={p.title}
+                  className="rounded-lg border border-border bg-surface/70 px-3 py-2"
+                >
+                  <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {p.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Honesty footnote: toy problem, synthetic data, emulator run. No speed or
+              accuracy advantage over classical is claimed — quantum here is a verification
+              seal, not the decision-maker.
+            </p>
+          </Card>
+
+
+
+          <Card>
             <H2>4 qubits → NOW/NEXT split (Max-Cut)</H2>
             <P>
               Four high-impact jobs become four qubits, on a weighted ring: J0–J1, J1–J2,
