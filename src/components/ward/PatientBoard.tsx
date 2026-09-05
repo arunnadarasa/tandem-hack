@@ -46,7 +46,7 @@ export function PatientBoard({
               <span>Patient</span>
               {showDoctor && <span className="text-center">Dr</span>}
               <span className="text-center">NEWS</span>
-              <span className="text-right">Status</span>
+              <span className="text-right">Jobs Status</span>
               <span />
             </div>
             {list.map((p, i) => (

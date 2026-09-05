@@ -102,23 +102,21 @@ export function CategoryTag({ category }: { category: Job["category"] }) {
   );
 }
 
-const STATUS_STYLE: Record<JobStatus, { label: string; cls: string; icon: typeof Check }> = {
-  todo: { label: "To do", cls: "bg-todo/15 text-todo ring-1 ring-todo/40", icon: Circle },
-  chase: { label: "To chase", cls: "bg-chase/15 text-chase ring-1 ring-chase/40", icon: Hourglass },
-  done: { label: "Done", cls: "bg-done/15 text-done ring-1 ring-done/40", icon: Check },
+const STATUS_STYLE: Record<JobStatus, { label: string; cls: string }> = {
+  todo: { label: "To do", cls: "bg-todo/15 text-todo ring-1 ring-todo/40" },
+  chase: { label: "To chase", cls: "bg-chase/15 text-chase ring-1 ring-chase/40" },
+  done: { label: "Done", cls: "bg-done/15 text-done ring-1 ring-done/40" },
 };
 
 export function StatusPill({ status }: { status: JobStatus }) {
   const s = STATUS_STYLE[status];
-  const Icon = s.icon;
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold",
+        "inline-flex items-center rounded-full px-2 py-1 text-[11px] font-semibold",
         s.cls,
       )}
     >
-      <Icon className="h-3 w-3" />
       {s.label}
     </span>
   );
