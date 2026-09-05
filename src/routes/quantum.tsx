@@ -11,14 +11,15 @@ export const Route = createFileRoute("/quantum")({
       {
         name: "description",
         content:
-          "WardFlow sorts ward jobs classically; Quantinuum receipts stamp the handover — 26 qubits in a perfect GHZ on Helios (512/512 shots) and 100% optimum mass after F-VQE. No quantum advantage claimed.",
+          "WardFlow sorts ward jobs classically; Quantinuum receipts stamp the handover — 98 qubits in a perfect GHZ plus a parity receipt on Helios (256/256 shots each) and 100% optimum mass after F-VQE. No quantum advantage claimed.",
       },
       { property: "og:title", content: "Quantum-verified handover (WardFlow)" },
       {
         property: "og:description",
         content:
-          "26/26 qubits entangled in a perfect GHZ on Quantinuum Helios and a 4-qubit shift split driven to 100% optimum mass. Receipts for everything, advantage claimed for nothing.",
+          "Helios's full 98-qubit capacity receipted in one day — perfect GHZ and Iceberg-style parity check — plus a 4-qubit shift split at 100% optimum mass. Receipts for everything, advantage claimed for nothing.",
       },
+
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
