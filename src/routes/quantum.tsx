@@ -226,15 +226,10 @@ q3: ──H────────────■──────────
               <Metric label="Verdict" value="PASS" highlight />
             </div>
 
-            <a
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4"
-              href="https://qnexus.nexus.quantumcomputing.co.uk/jobs/7f8ad56f"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View job 7f8ad56f on Nexus
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Receipt reference: <code className="font-mono text-foreground">job 7f8ad56f</code>
+            </p>
+
 
             <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
               Technical note: the job runs on the <strong>hardware-qualified</strong>{" "}
