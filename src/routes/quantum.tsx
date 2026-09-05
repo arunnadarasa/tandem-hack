@@ -57,6 +57,21 @@ const SKILLS: {
     github:
       "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/openclaw/SKILL.md",
   },
+  {
+    name: "quantum-clinical-safety",
+    version: "1.0.0",
+    summary:
+      "Makes every quantum claim about a health tool hazard-led instead of feature-led: cause → hazard → hazardous situation → harm → control → residual rating, inside DCB0129/DCB0160, DTAC, DPIA and the UK MDR decision-support boundary. House rules travel with it — hazards are never closed, only rated and left open; emulator is not hardware; a filename is not a receipt; no efficacy or deployment claims; CSC-QT gives a per-domain readiness picture and never a score or pass mark.",
+    tags: ["clinical-safety", "dcb0129", "dcb0160", "dtac", "dpia", "csc-qt"],
+    file: "/skills/quantum-clinical-safety/SKILL.md",
+    note: "Written against a sibling project (EndoTrack) and published here as the reusable safety discipline this section follows — it is not a WardFlow safety case.",
+    extras: [
+      { label: "references/hazard-log.md", file: "/skills/quantum-clinical-safety/references/hazard-log.md" },
+      { label: "references/standards.md", file: "/skills/quantum-clinical-safety/references/standards.md" },
+      { label: "references/csc-qt.md", file: "/skills/quantum-clinical-safety/references/csc-qt.md" },
+      { label: "references/release-gate.md", file: "/skills/quantum-clinical-safety/references/release-gate.md" },
+    ],
+  },
 ];
 
 const INSTALL_LANES: { lane: string; steps: string[] }[] = [
@@ -65,10 +80,12 @@ const INSTALL_LANES: { lane: string; steps: string[] }[] = [
     steps: [
       "Download the SKILL.md file.",
       "Put it at .agents/skills/<skill-name>/SKILL.md in your project.",
+      "If the skill ships a references/ folder, keep it alongside SKILL.md.",
       "Activate it in Settings › Skills.",
       "The frontmatter name and description are what make it load on the right task — keep them intact.",
     ],
   },
+
   {
     lane: "Claude Code",
     steps: [
