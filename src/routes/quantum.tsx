@@ -591,7 +591,7 @@ const SYNERGY: { direction: string; points: string[] }[] = [
 
 function QuantumPage() {
   return (
-    <main className="min-h-screen bg-surface px-4 py-8 text-foreground">
+    <main className="app-canvas min-h-screen px-4 py-8 text-foreground">
       <div className="mx-auto max-w-3xl">
         <div className="mb-6 flex items-center gap-3">
           <Link to="/">
@@ -602,39 +602,49 @@ function QuantumPage() {
           </Link>
         </div>
 
-        <header className="mb-8">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-            <Atom className="h-3.5 w-3.5" />
-            Quantum capability layer
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            WardFlow sorts the jobs{" "}
-            <span className="text-primary">classically</span> — quantum stamps a
-            tamper-evident receipt for handover.
-          </h1>
-          <p className="mt-3 text-lg text-muted-foreground">
-            All 26 qubits — one per ward job — entangled in a perfect GHZ state on{" "}
-            <strong className="text-foreground">Quantinuum Helios</strong> (512/512 shots,
-            job <code>0fc1f87b</code>), and a 4-qubit shift split driven to{" "}
-            <strong className="text-foreground">100% optimum mass</strong> with
-            Quantinuum&apos;s own F-VQE method (job <code>bb1021a2</code>). Receipts for
-            everything, advantage claimed for nothing.
-          </p>
+        <header className="panel rise-in relative mb-10 overflow-hidden rounded-3xl p-7 sm:p-9">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-50 blur-3xl"
+            style={{ background: "color-mix(in oklab, var(--primary) 55%, transparent)" }}
+          />
+          <div className="relative">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/12 px-3 py-1 text-xs font-semibold text-primary">
+              <Atom className="h-3.5 w-3.5" />
+              Quantum capability layer
+            </div>
+            <h1 className="font-display text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
+              WardFlow sorts the jobs{" "}
+              <span className="text-primary">classically</span> — quantum stamps a
+              tamper-evident receipt for handover.
+            </h1>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              All 26 qubits — one per ward job — entangled in a perfect GHZ state on{" "}
+              <strong className="text-foreground">Quantinuum Helios</strong> (512/512 shots,
+              job <code>0fc1f87b</code>), and a 4-qubit shift split driven to{" "}
+              <strong className="text-foreground">100% optimum mass</strong> with
+              Quantinuum&apos;s own F-VQE method (job <code>bb1021a2</code>). Receipts for
+              everything, advantage claimed for nothing.
+            </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {STATS.map((s) => (
-              <div
-                key={s.value}
-                className="rounded-xl border border-primary/25 bg-primary/5 p-4"
-              >
-                <p className="font-mono text-2xl font-bold text-primary">{s.value}</p>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  {s.label}
-                </p>
-              </div>
-            ))}
+            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {STATS.map((s) => (
+                <div
+                  key={s.value}
+                  className="lift rounded-2xl border border-primary/25 bg-primary/8 p-4"
+                >
+                  <p className="font-display text-3xl font-extrabold tabular-nums text-primary">
+                    {s.value}
+                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </header>
+
 
 
         <section className="space-y-6">
