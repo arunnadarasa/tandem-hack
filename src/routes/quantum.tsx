@@ -1080,7 +1080,7 @@ q3: ──H────────────■──────────
 
 
 
-          <Card>
+          <Card id="model-card">
             <H2>Quantum model card (v1.0)</H2>
             <P>
               Structured per Everitt &amp; Ji, <em>Model Cards for Quantum Technologies
