@@ -125,6 +125,176 @@ const DEMO = [
   "Live demo: pick 4 jobs, show the shift split, copy the Nexus job link.",
 ];
 
+const PLAIN: { title: string; body: string }[] = [
+  {
+    title: "Classical stays in charge",
+    body: "WardFlow sorts the ward's jobs the normal, fast, explainable way. Nothing about the decision changes.",
+  },
+  {
+    title: "A real quantum job stamps it",
+    body: "Four jobs, split into NOW vs NEXT shifts, handed to Quantinuum Nexus as a 4-qubit puzzle (Max-Cut). The best score is 10, reached by exactly two patterns: 0101 and 1010.",
+  },
+  {
+    title: "The receipt is live and checkable",
+    body: "On H1-1LE, 256 shots landed on those best patterns 19% of the time; random guessing gives 12.5%. That fingerprint is tied to this handover and can't be quietly edited afterwards.",
+  },
+  {
+    title: "Why it matters",
+    body: "Handovers are where ward jobs get lost. A tamper-evident receipt means the incoming shift can prove what was agreed, not just remember it.",
+  },
+];
+
+const CARD_FIELDS: { label: string; value: string }[] = [
+  { label: "Name", value: "WardFlow Quantum Capability Layer" },
+  { label: "Version", value: "1.0 · 2026-09-05 (single-day build)" },
+  { label: "Owner", value: "Arun Nadarasa · Association for Clinical Quantum" },
+  { label: "Repository", value: "arunnadarasa/tandem-hack-quantum" },
+  { label: "Licence", value: "Open hackathon artifact · Nexus T&Cs govern backends" },
+  { label: "Methodology", value: "Clinical Quantum Methodology v1.3" },
+  { label: "Hardware family", value: "Quantinuum trapped-ion: H1 20q · H2 56q · Helios 98q" },
+  { label: "Execution tier", value: "Emulators only — no QPU run claimed" },
+  { label: "Simulator classes", value: "Statevector ≤26q · stabilizer 98q · noisy H1/H2-Em" },
+  { label: "Programming lanes", value: "pytket → Nexus → execute · Guppy → HUGR (Helios)" },
+  { label: "Native gates", value: "1q rotations + ZZ / parameterised-angle ZZ" },
+  { label: "Uncertainty envelope", value: "4·√(0.5/shots) — 0.088 @256, 0.0625 @512" },
+];
+
+const INTENDED_USE = [
+  "Primary use: tamper-evident execution receipts for ward-round handover — the classical WardFlow sort stays the decision-maker; the quantum layer stamps the agreed shift split with a checkable sampling fingerprint.",
+  "Intended users: hackathon judges, NHS digital teams evaluating quantum readiness, clinical quantum researchers.",
+];
+
+const OUT_OF_SCOPE = [
+  "Not clinical decision-making.",
+  "No patient-data processing — synthetic jobs only, DPIA GREEN.",
+  "No claim of quantum speed or accuracy advantage.",
+  "Not production deployment.",
+];
+
+const TRUST: { label: string; value: string }[] = [
+  { label: "Cataloged", value: "Skill, persona and methodology versioned in-repo" },
+  { label: "Scanned", value: "Secret-scan before every push; no hidden instructions" },
+  { label: "Evaluated", value: "With/without discipline: 0.1875 → 1.0000, receipts diffable" },
+  { label: "Signed", value: "Not yet — detached receipt signatures are future work" },
+  { label: "Documented", value: "This card (QUANTUM_CARD.md v1.0)" },
+];
+
+const CIRCUITS: {
+  circuit: string;
+  qubits: string;
+  backend: string;
+  job: string;
+  result: string;
+  verdict: string;
+  pass?: boolean;
+}[] = [
+  {
+    circuit: "Shift-split QAOA p=1",
+    qubits: "4",
+    backend: "H1-1LE, H2-1LE, H1/H2-Em, Aer",
+    job: "7f8ad56f +4",
+    result: "opt-mass 0.125–0.1875 vs 0.125 uniform",
+    verdict: "weak PASS",
+    pass: true,
+  },
+  {
+    circuit: "Shift-split F-VQE (Amaro 2022)",
+    qubits: "4",
+    backend: "H1-1LE",
+    job: "bb1021a2",
+    result: "opt-mass 1.0000 (256/256 shots)",
+    verdict: "PASS — method-validated",
+    pass: true,
+  },
+  {
+    circuit: "Shift-split QAOA p=2",
+    qubits: "8",
+    backend: "4 backends",
+    job: "e7e1a809 +3",
+    result: "mean-cut > uniform; opt-mass 0.01–0.04",
+    verdict: "honest negative",
+  },
+  {
+    circuit: "Whole-ward QAOA p=1",
+    qubits: "26",
+    backend: "Helios-1E-lite (HUGR)",
+    job: "67f9d2f4",
+    result: "mean-cut 43.61 vs 43.05",
+    verdict: "explores, doesn't concentrate",
+  },
+  {
+    circuit: "Whole-ward GHZ",
+    qubits: "26",
+    backend: "Helios-1E-lite (HUGR)",
+    job: "0fc1f87b",
+    result: "512/512 shots, GHZ-mass 1.0",
+    verdict: "PASS",
+    pass: true,
+  },
+  {
+    circuit: "Hospital-scale GHZ",
+    qubits: "98",
+    backend: "Helios-1E-lite (stabilizer)",
+    job: "b3d1c274",
+    result: "256/256 shots, 2 outcomes from a 3×10²⁹ space",
+    verdict: "PASS",
+    pass: true,
+  },
+  {
+    circuit: "Parity attestation (Iceberg-style)",
+    qubits: "98 (90 data + 8 parity)",
+    backend: "Helios-1E-lite (stabilizer)",
+    job: "8eddb96d",
+    result: "256/256 shots, parities consistent",
+    verdict: "PASS — tamper-evidence",
+    pass: true,
+  },
+];
+
+const EVALUATION = [
+  "Pre-registered bars: decision rules fixed in ward_shift_protocol.json before submission — PASS = optimum-mass ≥ uniform − envelope.",
+  "Classical baselines stated per run: brute-force optimum at 4q and 8q, 10k-sample uniform-random mean cut at 26q.",
+  "Reproducibility: seeds fixed (11/31), shots recorded, packages pinned (guppylang 1.0.x, pytket 2.18.1, qnexus), and a submit-journal so job IDs survive process death.",
+  "Honest verification gap: emulator results are classically simulable by construction — no classically-unverifiable claim exists here.",
+];
+
+const LIMITATIONS = [
+  "No quantum advantage. Binding wording: emulator scale runs are 'hardware-scale readiness'. Advantage is a pre-registered future claim gated on real QPU plus matched classical baselines.",
+  "Unoptimised variational circuits explore rather than concentrate (8q, 26q QAOA). F-VQE fixes this at 4q; scaling F-VQE training is untested here.",
+  "The 98-qubit lane is Clifford-only (stabilizer) — it certifies entanglement scale and parity structure, not optimisation.",
+  "sv1 (Braket) gap: needs an AWS S3 bucket; local execution hit a Nexus 500. Recorded, not retried blind.",
+  "Emulator noise models are not hardware — noisy-emulator receipts approximate but do not replace QPU characterisation.",
+];
+
+const CQM_VALUES: { value: string; over: string }[] = [
+  { value: "Problem-first", over: "Demonstration of technology" },
+  { value: "Reproducible workflow", over: "A single headline accuracy" },
+  { value: "Honest negatives", over: "Strained positives" },
+  { value: "Clinical safety", over: "Speed and hype" },
+];
+
+const CQM_PHASES = [
+  "Discovery — define the clinical problem, not the technology",
+  "Data shape — DPIA by design, GREEN synthetic data only",
+  "Bulletproof protocol — evidence scan, reject gates, pre-registration",
+  "Toy — smallest honest circuit, locked config, receipt required",
+  "Scale — same seed line, classical baseline at every rung",
+  "Minimum quantum advantage — an explicit go/no-go gate",
+  "Clinical integration — NHS pathway, hazard log, safety sign-off",
+  "Surveillance — continuous outcomes and incident reporting",
+];
+
+const REFERENCES = [
+  "Everitt & Ji, Model Cards for Quantum Technologies Reporting, arXiv:2412.13151 — card structure.",
+  "NVIDIA-Verified Agent Skills (docs.nvidia.com/skills) — trust-pipeline structure.",
+  "Amaro et al., Filtering variational quantum algorithms for combinatorial optimization, Quantum Sci. Technol. 7 015021 (2022) — the F-VQE method.",
+  "Jin, He, Amaro et al., arXiv:2504.21172 — Iceberg parity-check pattern.",
+  "Niroula et al., arXiv:2511.03689 — Helios 98-qubit real-time execution.",
+  "Quantinuum H2 and Helios product data sheets — hardware numbers, never invented.",
+];
+
+
+
 
 function QuantumPage() {
   return (
