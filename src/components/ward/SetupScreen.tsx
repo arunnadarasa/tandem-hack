@@ -145,24 +145,24 @@ export function SetupScreen() {
                       key={p.id}
                       onClick={() => toggle(p.id)}
                       className={cn(
-                        "flex items-center gap-2 rounded-md border px-2 py-1.5 text-left transition-colors",
+                        "flex items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left transition-all duration-200",
                         on
-                          ? "border-primary bg-primary/8"
-                          : "border-transparent hover:bg-accent/60",
+                          ? "border-primary/50 bg-primary/12 shadow-[0_10px_30px_-24px_var(--primary)]"
+                          : "border-transparent hover:bg-accent/50",
                       )}
                     >
                       <span
                         className={cn(
-                          "flex h-5 w-5 items-center justify-center rounded border",
+                          "flex h-5 w-5 items-center justify-center rounded-md border transition-colors",
                           on ? "border-primary bg-primary text-primary-foreground" : "border-border",
                         )}
                       >
                         {on && <Check className="h-3 w-3" />}
                       </span>
-                      <span className="rounded bg-foreground px-1.5 py-0.5 font-mono text-[11px] font-bold text-background">
+                      <span className="rounded-md bg-foreground px-1.5 py-0.5 font-mono text-[11px] font-bold text-background">
                         {p.bed}
                       </span>
-                      <span className="min-w-0 flex-1 truncate text-sm">{p.name}</span>
+                      <span className="min-w-0 flex-1 truncate text-sm font-medium">{p.name}</span>
                       <span className="hidden truncate text-xs text-muted-foreground sm:block sm:max-w-[10rem]">
                         {p.summary}
                       </span>
@@ -175,10 +175,11 @@ export function SetupScreen() {
           ))}
         </div>
 
-        <div className="sticky bottom-4 mt-6 flex justify-end">
+        <div className="sticky bottom-4 mt-8 flex justify-end">
           <Button
             size="lg"
             disabled={!ready}
+            className="rounded-xl px-6 shadow-[0_18px_50px_-24px_var(--primary)]"
             onClick={() =>
               startShift({ ward, name: name.trim(), bleep: bleep.trim(), patientIds: selected })
             }
@@ -186,6 +187,7 @@ export function SetupScreen() {
             Start shift on {ward.split(" — ")[0]}
           </Button>
         </div>
+
       </div>
     </main>
   );
