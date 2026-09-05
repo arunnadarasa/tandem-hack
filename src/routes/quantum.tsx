@@ -495,7 +495,9 @@ q3: ──H────────────■──────────
               running.
             </P>
             <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-              Module built with Claude Fable 5.1. Quantum circuits via pytket + Nexus.
+              Module built with Claude Fable 5.1 under <strong>CQM v1.3</strong>. Quantum
+              circuits via pytket + Guppy/HUGR on Quantinuum Nexus.
+
               Documentation lives in the repo under{" "}
               <code>docs/QUANTUM_SPOTLIGHT.md</code> and <code>quantum/README.md</code>.
             </p>
