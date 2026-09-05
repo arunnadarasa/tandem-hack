@@ -408,6 +408,36 @@ q3: ──H────────────■──────────
               GHZ, receipt attached. Tamper with a GHZ-signed record and the correlation
               pattern breaks detectably.”
             </blockquote>
+
+            <div className="mt-6 rounded-lg border border-primary/25 bg-primary/5 p-4">
+              <H2>98-qubit finale: Helios&apos;s entire published capacity</H2>
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                We then ran the full stack: a 98q GHZ (one qubit per job, whole hospital)
+                and a 98q Iceberg-style parity receipt. Both perfect. Scale ladder in one
+                day: <strong className="text-foreground">4q → 8q → 26q → 98q</strong>, every
+                step receipted.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {HELIOS_98.map((r) => (
+                  <div
+                    key={r.job}
+                    className="rounded-lg border border-border bg-card px-3 py-2.5"
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                      {r.backend}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{r.result}</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <code className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary">
+                        job {r.job}
+                      </code>
+                      <span className="text-xs font-medium text-primary">{r.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
               Scale wording (binding): 26 qubits on an emulator is{" "}
               <em>hardware-scale readiness</em>, never <em>quantum advantage</em> — it stays
