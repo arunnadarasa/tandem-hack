@@ -975,7 +975,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="helios">
             <H2>Helios: the whole ward on the next-gen stack</H2>
             <P>
               We scaled from 4 jobs to the <strong>whole ward: 26 jobs = 26 qubits</strong>,
