@@ -75,19 +75,19 @@ function QuantumPage() {
             </p>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-bedside" />
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-bedside" />
                 <span>Bedside bloods</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-imaging" />
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-imaging" />
                 <span>Imaging request</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-review" />
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-review" />
                 <span>Clinical review for a high NEWS score</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-referral" />
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cat-referral" />
                 <span>Referral to another specialty</span>
               </li>
             </ul>
