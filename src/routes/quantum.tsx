@@ -800,7 +800,7 @@ function QuantumPage() {
             </p>
           </Card>
 
-          <Card>
+          <Card id="plain-english">
             <H2>In plain English</H2>
             <P>WardFlow decides. Quantum signs the receipt.</P>
             <div className="mt-4 space-y-3">
