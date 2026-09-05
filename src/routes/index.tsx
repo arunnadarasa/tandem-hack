@@ -86,8 +86,8 @@ function Shell() {
             value={view}
             onChange={(v) => setView(v as "patients" | "jobs")}
             options={[
-              { value: "patients", label: "Patients", icon: <Rows3 className="h-3.5 w-3.5" /> },
               { value: "jobs", label: "Jobs", icon: <LayoutList className="h-3.5 w-3.5" /> },
+              { value: "patients", label: "Patients", icon: <Rows3 className="h-3.5 w-3.5" /> },
             ]}
           />
 
