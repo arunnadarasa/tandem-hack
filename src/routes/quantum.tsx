@@ -294,40 +294,236 @@ const REFERENCES = [
   "Oskrochi Y & Grimes K, CSC-QT: a quality assessment tool for DCB0129/DCB0160 clinical safety cases, BMJ Innovations (2026), doi 10.1136/bmjinnov-2026-001660 — clinical safety review structure.",
 ];
 
-const CSC_DOMAINS: { domain: string; evidence: string }[] = [
+const LIFECYCLE: { label: string; value: string }[] = [
+  { label: "Clinical Safety Officer", value: "Arun Nadarasa, GPhC 2080128" },
   {
-    domain: "1. Scope and context",
-    evidence:
-      "Named owner and accountable author, versioned model card (v1.0), the system explicitly identified as the WardFlow Quantum Capability Layer, and the deployment context stated as a hackathon build on emulators only.",
+    label: "Release authority",
+    value: "A named registered individual — never a team or a process",
   },
+  { label: "Lifecycle status", value: "Pre-deployment" },
+  { label: "Live patient data", value: "None has ever entered the system" },
+  { label: "Deployment", value: "No NHS organisation has deployed it" },
   {
-    domain: "2. Hazard identification and structure",
-    evidence:
-      "An honest-negatives register rather than a highlight reel: unoptimised QAOA explores instead of concentrating, the 98-qubit lane is Clifford-only, and the sv1 backend is a recorded gap. Each is a named limitation, not buried in prose.",
-  },
-  {
-    domain: "3. Risk assessment",
-    evidence:
-      "An uncertainty envelope of 4·√(0.5/shots) applied to every probability claim (0.088 at 256 shots), with the classical baseline stated per run so a reader can judge the margin themselves.",
-  },
-  {
-    domain: "4. Controls and evidence",
-    evidence:
-      "Every claim carries a job ID and shot count. The controls are the pre-registered pass bar, fixed seeds (11/31), pinned packages, and a submit journal so job IDs survive process death.",
-  },
-  {
-    domain: "5. Safety argument",
-    evidence:
-      "The binding conclusion: the classical sort remains the decision-maker, the quantum layer is a tamper-evident seal, and no clinical or quantum-advantage claim is made anywhere.",
+    label: "Clinical authority to release",
+    value: "Not sought",
   },
 ];
 
-const SAFETY_POSITION = [
-  "DPIA GREEN — synthetic dummy jobs only; no patient data enters the quantum layer at any point.",
-  "Out of scope for clinical decision-making. Nothing here is a device function, and no diagnostic or triage claim is made.",
-  "Not a deployed system, so no live DCB0160 safety case is claimed for it.",
-  "The quantum receipts are execution-integrity evidence — the kind of artefact a hazard log's evidence column would reference. They do not by themselves discharge any DCB duty.",
+const HAZARDS: {
+  id: string;
+  cause: string;
+  hazard: string;
+  situation: string;
+  harm: string;
+  controls: string[];
+  residual: string;
+  band: "acceptable" | "undesirable" | "unacceptable";
+}[] = [
+  {
+    id: "QH-01",
+    cause: "Ranking presented without its decision-support boundary",
+    hazard: "Ranking mistaken for a triage decision",
+    situation: "A clinician defers to the displayed order instead of reviewing it",
+    harm: "Harm-1 — delayed review of a deteriorating patient",
+    controls: ["QC-01", "QC-06"],
+    residual: "2 — acceptable",
+    band: "acceptable",
+  },
+  {
+    id: "QH-02",
+    cause: "Unoptimised QAOA explores rather than concentrates (8q, 26q)",
+    hazard: "A weak split presented as an agreed one",
+    situation: "A shift split with near-uniform mass is stamped and handed over",
+    harm: "Harm-2 — a ward job is allocated to the wrong shift and slips",
+    controls: ["QC-02", "QC-03"],
+    residual: "3 — undesirable, CSO sign-off",
+    band: "undesirable",
+  },
+  {
+    id: "QH-03",
+    cause: "The 98-qubit lane is Clifford-only (stabilizer)",
+    hazard: "An entanglement-scale receipt read as an optimisation result",
+    situation: "A reviewer credits scheduling capability the run never demonstrated",
+    harm: "Harm-3 — a capability decision taken on evidence that does not support it",
+    controls: ["QC-04", "QC-05"],
+    residual: "2 — acceptable",
+    band: "acceptable",
+  },
+  {
+    id: "QH-04",
+    cause: "All runs are emulator runs; no QPU execution is claimed",
+    hazard: "An emulator receipt read as hardware evidence",
+    situation: "Procurement over-states readiness on simulated-only work",
+    harm: "Harm-3 — a capability decision taken on evidence that does not support it",
+    controls: ["QC-04", "QC-05"],
+    residual: "2 — acceptable",
+    band: "acceptable",
+  },
+  {
+    id: "QH-05",
+    cause: "The signature path is ECDSA, not post-quantum",
+    hazard: "Receipt provenance is not quantum-safe end to end",
+    situation: "A future adversary forges a receipt signature retrospectively",
+    harm: "Harm-4 — an audit trail that cannot be relied on",
+    controls: ["QC-05", "QC-07"],
+    residual: "3 — undesirable, CSO sign-off",
+    band: "undesirable",
+  },
+  {
+    id: "QH-06",
+    cause: "The cohort behind a result is swapped without a binding",
+    hazard: "Silent substitution of the inputs a receipt attests to",
+    situation: "An audit cannot reconstruct what was actually run",
+    harm: "Harm-4 — an audit trail that cannot be relied on",
+    controls: ["QC-07", "QC-05"],
+    residual: "2 — acceptable",
+    band: "acceptable",
+  },
 ];
+
+const CONTROLS: { id: string; control: string; status: string }[] = [
+  {
+    id: "QC-01",
+    control:
+      "Binding wording on every surface: the classical sort remains the decision-maker; the quantum layer stamps, it does not rank.",
+    status: "In place",
+  },
+  {
+    id: "QC-02",
+    control:
+      "Pre-registered pass bar in ward_shift_protocol.json, fixed before submission — not moved afterwards.",
+    status: "In place",
+  },
+  {
+    id: "QC-03",
+    control:
+      "Uncertainty envelope 4·√(0.5/shots) applied to every probability claim (0.088 at 256 shots), with the classical baseline stated per run.",
+    status: "In place",
+  },
+  {
+    id: "QC-04",
+    control:
+      "Execution tier declared per run — emulator is never written as hardware; simulated-only work enters at its own tier.",
+    status: "In place",
+  },
+  {
+    id: "QC-05",
+    control:
+      "Receipt discipline: engine, shot count, seed (11/31), pinned packages and job ID on every claim, held in a submit journal that survives process death.",
+    status: "In place",
+  },
+  {
+    id: "QC-06",
+    control:
+      "Named approval for every state change — no auto-booking, no discharge, no diagnosis.",
+    status: "In place",
+  },
+  {
+    id: "QC-07",
+    control:
+      "Merkle-bound cohort provenance with on-chain anchoring, so the cohort behind a result cannot be swapped silently.",
+    status: "Planned",
+  },
+];
+
+const RATING_BANDS: { band: string; meaning: string }[] = [
+  { band: "1–2", meaning: "Acceptable" },
+  { band: "3", meaning: "Undesirable — CSO sign-off required" },
+  { band: "4–5", meaning: "Unacceptable — do not deploy" },
+];
+
+const STANDARDS: { instrument: string; binds: string; demands: string }[] = [
+  {
+    instrument: "DCB0129",
+    binds: "Us, as manufacturer",
+    demands:
+      "Hazard log, Clinical Safety Case Report, named Clinical Safety Officer before any deployment.",
+  },
+  {
+    instrument: "DCB0160",
+    binds: "The deploying NHS organisation",
+    demands:
+      "Local hazard assessment, local controls, training, local CSO signature.",
+  },
+  {
+    instrument: "DTAC section C1",
+    binds: "Procurement",
+    demands:
+      "DCB0129 conformity, or an exceptional non-applicability rationale — which we do not claim.",
+  },
+  {
+    instrument: "UK MDR",
+    binds: "The boundary",
+    demands:
+      "Ranking for human review is decision support; acting on the ranking is a device. We stay on the decision-support side.",
+  },
+  {
+    instrument: "DPIA / UK GDPR, ICO",
+    binds: "Data",
+    demands:
+      "DPIA written prospectively; ICO Tech Horizons 2025 sets the quantum-in-healthcare expectation.",
+  },
+  {
+    instrument: "EU AI Act (in force 2 Aug 2026)",
+    binds: "Disclosure",
+    demands:
+      "AI must identify itself; generated content needs machine-readable marking.",
+  },
+  {
+    instrument: "FDA CDRH GenAI discussion paper (Aug 2026)",
+    binds: "Design discipline only",
+    demands:
+      "Cited as a request for feedback, never as a requirement.",
+  },
+];
+
+const CSC_READINESS: { domain: string; readiness: string }[] = [
+  {
+    domain: "Scope and context",
+    readiness:
+      "Partial — system, intended use, users and pre-deployment context are stated and versioned; no organisational deployment context exists to describe.",
+  },
+  {
+    domain: "Risk management process",
+    readiness:
+      "Partial — pre-registered pass bars and a fixed 5×5 scale are in use; a full documented process under DCB0129 is not started.",
+  },
+  {
+    domain: "Hazard identification and analysis",
+    readiness:
+      "Partial — the hazard log above plus a published register of honest negatives; no multidisciplinary hazard workshop has been held.",
+  },
+  {
+    domain: "Risk control and evidence",
+    readiness:
+      "Partial — six controls in place with receipts (job ID, shots, seed, pinned packages); QC-07 cohort binding is planned, not started.",
+  },
+  {
+    domain: "Governance and lifecycle",
+    readiness:
+      "Planned — a named CSO exists; per-release safety impact tagging, hazard assessment per change and an uplifted CSCR are not started.",
+  },
+];
+
+const SYNERGY: { direction: string; points: string[] }[] = [
+  {
+    direction: "Quantum work strengthens the safety case",
+    points: [
+      "Merkle-bound cohort provenance means the cohort behind a result cannot be swapped silently.",
+      "On-chain anchoring gives an immutable audit trail rather than a filename.",
+      "The published negative record supplies failure evidence — normally the weakest part of a safety case.",
+    ],
+  },
+  {
+    direction: "Clinical safety constrains the quantum work",
+    points: [
+      "Every claim must be expressible as cause → hazard → hazardous situation → harm → control → residual rating, or it is a capability statement, not a safety statement.",
+      "A pre-registered KPI gate replaces a bar that can be moved after the result.",
+      "Release passes a gate with a named signature, not a green build.",
+    ],
+  },
+];
+
 
 
 
