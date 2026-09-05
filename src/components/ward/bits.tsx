@@ -188,11 +188,12 @@ export function JobRow({
   return (
     <div
       className={cn(
-        "group flex items-start gap-2.5 rounded-lg border-l-[3px] bg-surface/50 px-2.5 py-2 transition-colors hover:bg-accent/50",
+        "group flex items-start gap-2.5 rounded-xl border border-border border-l-[3px] bg-surface/60 px-3 py-2.5 transition-all duration-200 hover:-translate-y-px hover:bg-accent/40",
         CATEGORY_STYLE[job.category].border,
         job.status === "done" && "opacity-55",
       )}
     >
+
       <button
         type="button"
         aria-label={job.status === "done" ? "Mark as to do" : "Mark as done"}
