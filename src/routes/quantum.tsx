@@ -12,8 +12,11 @@ const SKILLS: {
   summary: string;
   tags: string[];
   file: string;
-  github: string;
+  github?: string;
+  note?: string;
+  extras?: { label: string; file: string }[];
 }[] = [
+
   {
     name: "quantinuum",
     version: "1.1.0",
@@ -54,6 +57,21 @@ const SKILLS: {
     github:
       "https://github.com/arunnadarasa/tandem-hack-quantum/blob/main/skills/openclaw/SKILL.md",
   },
+  {
+    name: "quantum-clinical-safety",
+    version: "1.0.0",
+    summary:
+      "Makes every quantum claim about a health tool hazard-led instead of feature-led: cause → hazard → hazardous situation → harm → control → residual rating, inside DCB0129/DCB0160, DTAC, DPIA and the UK MDR decision-support boundary. House rules travel with it — hazards are never closed, only rated and left open; emulator is not hardware; a filename is not a receipt; no efficacy or deployment claims; CSC-QT gives a per-domain readiness picture and never a score or pass mark.",
+    tags: ["clinical-safety", "dcb0129", "dcb0160", "dtac", "dpia", "csc-qt"],
+    file: "/skills/quantum-clinical-safety/SKILL.md",
+    note: "Written against a sibling project (EndoTrack) and published here as the reusable safety discipline this section follows — it is not a WardFlow safety case.",
+    extras: [
+      { label: "references/hazard-log.md", file: "/skills/quantum-clinical-safety/references/hazard-log.md" },
+      { label: "references/standards.md", file: "/skills/quantum-clinical-safety/references/standards.md" },
+      { label: "references/csc-qt.md", file: "/skills/quantum-clinical-safety/references/csc-qt.md" },
+      { label: "references/release-gate.md", file: "/skills/quantum-clinical-safety/references/release-gate.md" },
+    ],
+  },
 ];
 
 const INSTALL_LANES: { lane: string; steps: string[] }[] = [
@@ -62,10 +80,12 @@ const INSTALL_LANES: { lane: string; steps: string[] }[] = [
     steps: [
       "Download the SKILL.md file.",
       "Put it at .agents/skills/<skill-name>/SKILL.md in your project.",
+      "If the skill ships a references/ folder, keep it alongside SKILL.md.",
       "Activate it in Settings › Skills.",
       "The frontmatter name and description are what make it load on the right task — keep them intact.",
     ],
   },
+
   {
     lane: "Claude Code",
     steps: [
@@ -1335,9 +1355,10 @@ q3: ──H────────────■──────────
           <Card>
             <H2>Take the skill with you</H2>
             <P>
-              The two agent skills behind this work are downloadable here. Drop them into a
-              Lovable project, a Hermes agent, or a Telegram bot and the same discipline —
-              receipts, shot counts, pre-registered bars — comes with them.
+              The agent skills behind this work are downloadable here — the quantum lanes and
+              the clinical safety discipline. Drop them into a Lovable project, Claude Code, an
+              OpenClaw or Hermes agent, or a Telegram bot and the same discipline — receipts,
+              shot counts, pre-registered bars, hazard-led claims — comes with them.
             </P>
 
             <div className="mt-4 grid gap-3">
@@ -1353,6 +1374,11 @@ q3: ──H────────────■──────────
                     <span className="font-mono text-xs text-primary">v{s.version}</span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">{s.summary}</p>
+                  {s.note && (
+                    <p className="mt-2 rounded-lg border border-border bg-card px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                      {s.note}
+                    </p>
+                  )}
                   <div className="mt-2 flex flex-wrap gap-1">
                     {s.tags.map((t) => (
                       <span
@@ -1370,19 +1396,42 @@ q3: ──H────────────■──────────
                         Download SKILL.md
                       </Button>
                     </a>
-                    <a
-                      href={s.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2"
-                    >
-                      View on GitHub
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
+                    {s.github && (
+                      <a
+                        href={s.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-primary underline underline-offset-2"
+                      >
+                        View on GitHub
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
                   </div>
+                  {s.extras && (
+                    <div className="mt-3 border-t border-border pt-3">
+                      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Companion references
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {s.extras.map((x) => (
+                          <a
+                            key={x.file}
+                            href={x.file}
+                            download={x.label.split("/").pop()}
+                            className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-primary hover:bg-accent/50"
+                          >
+                            <Download className="h-3 w-3" />
+                            {x.label}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+
 
             <h3 className="mt-6 mb-2 text-sm font-semibold">Installing it</h3>
             <div className="grid gap-3 sm:grid-cols-3">
