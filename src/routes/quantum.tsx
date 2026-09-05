@@ -990,19 +990,170 @@ q3: ──H────────────■──────────
             <H2>Quantum Digital Clinical Safety</H2>
             <P>
               NHS digital health is assured through <strong>clinical safety cases</strong> —
-              DCB0129 for manufacturers, DCB0160 for deploying organisations. The{" "}
-              <strong>CSC-QT</strong> (Curistica) is a peer-reviewed instrument that gives
-              reviewers a structure for judging whether such a safety case is any good: 36
-              indicators across five domains, marked present or not present, reported as a
-              domain profile rather than a score.
+              DCB0129 for manufacturers, DCB0160 for deploying organisations. A safety case
+              is <em>hazard-led, not feature-led</em>: nothing is safe because it passed. It
+              is safe when the ways it can hurt a patient are named, controlled and rated.
             </P>
             <P>
-              The quantum layer is written to be <em>reviewable under that same
-              discipline</em>: named accountability, versioned documents, pre-registered
-              pass bars, and evidence attached to every claim.
+              Every quantum claim below is written as{" "}
+              <span className="font-mono text-xs text-foreground">
+                cause → hazard → hazardous situation → harm → control → residual rating
+              </span>
+              . A claim that cannot be written that way is a capability statement, and it is
+              kept out of the safety case.
             </P>
 
-            <div className="mt-4 overflow-hidden rounded-lg border border-border">
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Accountability and lifecycle</h3>
+            <dl className="grid gap-2 sm:grid-cols-2">
+              {LIFECYCLE.map((l) => (
+                <div key={l.label} className="rounded-lg border border-border bg-surface/70 px-3 py-2">
+                  <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                    {l.label}
+                  </dt>
+                  <dd className="text-sm text-foreground">{l.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              Intended use: rank and triage suspected-endometriosis-style referrals and ward
+              jobs <strong>for clinician review</strong>. No diagnosis, no auto-booking, no
+              discharge. Every state change needs a named approval.
+            </p>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Hazard log</h3>
+            <div className="overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[46rem] text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["ID", "Cause", "Hazard", "Hazardous situation", "Harm", "Controls", "Residual"].map(
+                      (h) => (
+                        <th
+                          key={h}
+                          className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                        >
+                          {h}
+                        </th>
+                      ),
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {HAZARDS.map((h) => (
+                    <tr
+                      key={h.id}
+                      id={h.id}
+                      className="border-t border-border align-top scroll-mt-24"
+                    >
+                      <td className="px-3 py-2 font-mono text-xs font-semibold text-primary">
+                        {h.id}
+                      </td>
+                      <td className="px-3 py-2 text-muted-foreground">{h.cause}</td>
+                      <td className="px-3 py-2 font-medium text-foreground">{h.hazard}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{h.situation}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{h.harm}</td>
+                      <td className="px-3 py-2">
+                        <span className="flex flex-wrap gap-1">
+                          {h.controls.map((c) => (
+                            <a
+                              key={c}
+                              href={`#${c}`}
+                              className="font-mono text-xs text-primary underline underline-offset-2"
+                            >
+                              {c}
+                            </a>
+                          ))}
+                        </span>
+                      </td>
+                      <td
+                        className={cn(
+                          "px-3 py-2 text-xs font-semibold",
+                          h.band === "acceptable" && "text-emerald-400",
+                          h.band === "undesirable" && "text-amber-400",
+                          h.band === "unacceptable" && "text-destructive",
+                        )}
+                      >
+                        {h.residual}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              Rated on a 5×5 scale — severity Minor→Catastrophic against likelihood Very
+              low→Very high, scored 1–5.{" "}
+              {RATING_BANDS.map((b, i) => (
+                <span key={b.band}>
+                  {i > 0 ? " · " : ""}
+                  <strong className="text-foreground">{b.band}</strong> {b.meaning}
+                </span>
+              ))}
+              . No hazard is ever marked closed — each carries a residual rating and stays
+              open.
+            </p>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Controls</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {CONTROLS.map((c) => (
+                <li
+                  key={c.id}
+                  id={c.id}
+                  className="flex scroll-mt-24 items-start gap-3 rounded-lg border border-border bg-surface/70 px-3 py-2"
+                >
+                  <span className="font-mono text-xs font-semibold text-primary">{c.id}</span>
+                  <span className="flex-1">{c.control}</span>
+                  <span
+                    className={cn(
+                      "shrink-0 text-[11px] font-semibold uppercase tracking-wider",
+                      c.status === "In place" ? "text-emerald-400" : "text-amber-400",
+                    )}
+                  >
+                    {c.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">Standards that apply</h3>
+            <div className="overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["Instrument", "Who it binds", "What it demands here"].map((h) => (
+                      <th
+                        key={h}
+                        className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {STANDARDS.map((s) => (
+                    <tr key={s.instrument} className="border-t border-border align-top">
+                      <td className="px-3 py-2 font-medium text-foreground">
+                        {s.instrument}
+                      </td>
+                      <td className="px-3 py-2 text-muted-foreground">{s.binds}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{s.demands}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3 className="mt-6 mb-2 text-sm font-semibold">
+              CSC-QT readiness — by domain, never a score
+            </h3>
+            <P>
+              The Clinical Safety Case Quality Tool (Oskrochi &amp; Grimes) reviews 36
+              indicators across five domains and deliberately produces{" "}
+              <strong>no score, no percentage and no pass mark</strong>. Readiness is
+              therefore published per domain, with &ldquo;planned&rdquo; and &ldquo;not
+              started&rdquo; written as they are.
+            </P>
+            <div className="mt-3 overflow-hidden rounded-lg border border-border">
               <table className="w-full text-sm">
                 <thead className="bg-surface/70 text-muted-foreground">
                   <tr>
@@ -1010,36 +1161,51 @@ q3: ──H────────────■──────────
                       CSC-QT domain
                     </th>
                     <th className="px-3 py-2 text-left text-[11px] uppercase tracking-wider">
-                      What the quantum layer puts in front of a reviewer
+                      Readiness
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {CSC_DOMAINS.map((d) => (
+                  {CSC_READINESS.map((d) => (
                     <tr key={d.domain} className="border-t border-border align-top">
                       <td className="px-3 py-2 font-medium text-foreground">{d.domain}</td>
-                      <td className="px-3 py-2 text-muted-foreground">{d.evidence}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{d.readiness}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            <h3 className="mt-6 mb-2 text-sm font-semibold">Safety position</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              {SAFETY_POSITION.map((s) => (
-                <li key={s} className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                  <span>{s}</span>
-                </li>
+            <h3 className="mt-6 mb-2 text-sm font-semibold">The two-way argument</h3>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {SYNERGY.map((s) => (
+                <div
+                  key={s.direction}
+                  className="rounded-lg border border-border bg-surface/70 p-3"
+                >
+                  <p className="mb-2 text-sm font-semibold text-foreground">{s.direction}</p>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    {s.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>{p}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
 
             <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-              <strong>Honest gap:</strong> WardFlow has not been reviewed with the CSC-QT
-              and holds no completed DCB0129 or DCB0160 safety case. The CSC-QT is named
-              here as the instrument that would be used if this system were taken toward
-              deployment — not as a review it has passed.
+              <strong>Honest gap:</strong> WardFlow has not been reviewed with the CSC-QT and
+              holds no completed DCB0129 or DCB0160 safety case. No clinical efficacy,
+              patient-outcome or cost-saving claim is made — the waiting-list argument is
+              capacity, cost and patient experience. Emulator is not hardware, and while any
+              signature path remains ECDSA (see{" "}
+              <a href="#QH-05" className="text-primary underline underline-offset-2">
+                QH-05
+              </a>
+              ) the system is not quantum-safe end to end.
             </p>
 
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
@@ -1056,6 +1222,7 @@ q3: ──H────────────■──────────
               </a>
             </p>
           </Card>
+
 
 
 
