@@ -42,11 +42,33 @@ const FVQE: { stage: string; mass: string; best?: boolean }[] = [
   { stage: "F-VQE trained (H1-1LE, job bb1021a2)", mass: "100%", best: true },
 ];
 
+const STATS: { value: string; label: string }[] = [
+  { value: "26/26", label: "qubits in a perfect GHZ on Helios — 512/512 shots" },
+  { value: "100%", label: "optimum-state mass after F-VQE training — 256/256 shots" },
+  { value: "6", label: "Nexus backends receipted (H1/H2 lanes + Helios HUGR + Aer)" },
+];
+
+const HELIOS: { program: string; job: string; result: string }[] = [
+  {
+    program: "26q GHZ — all ward jobs entangled",
+    job: "0fc1f87b",
+    result:
+      "Perfect: 512/512 shots on all-NOW / all-NEXT, GHZ-mass 1.0000 — only 2 outcomes from a 67-million-state space",
+  },
+  {
+    program: "26q QAOA — whole-ward split",
+    job: "67f9d2f4",
+    result:
+      "Mean cut 43.61 vs 43.05 uniform; explores, doesn't concentrate — F-VQE is the known fix",
+  },
+];
+
 const HONESTY = [
   "Small circuit (4 qubits, 10 edges) — a hackathon toy.",
   "5 of 6 backends receipted (Aer fixed via AerConfig); sv1 is an honest gap (needs an AWS bucket).",
   "8 qubits at p=2: mean sampled cut beats uniform on all 4 backends, but optimum mass is tiny — an honest negative.",
   "26 qubits is 'hardware-scale readiness', never 'quantum advantage' — it is still classically simulable.",
+  "26q GHZ slide beat: “We entangled all 26 qubits — one per ward job — on Quantinuum's next-gen Helios stack. Every one of 512 shots collapsed to all-NOW or all-NEXT: textbook GHZ, receipt attached.” (job 0fc1f87b)",
   "The classical sort stays the decision-maker.",
   "No quantum advantage claimed — this is a tamper-evident seal, not a classifier.",
 ];
@@ -58,6 +80,7 @@ const DEMO = [
   "H1-1LE receipts: optimum mass 0.19 vs 0.125 uniform.",
   "Live demo: pick 4 jobs, show the shift split, copy the Nexus job link.",
 ];
+
 
 function QuantumPage() {
   return (
