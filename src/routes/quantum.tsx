@@ -106,11 +106,29 @@ function QuantumPage() {
             tamper-evident receipt for handover.
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
-            A 4-qubit Max-Cut QAOA on Quantinuum Nexus certifies this shift split with a
-            real, checkable fingerprint. No advantage claimed; the job reference below is
-            a live Nexus link.
+            All 26 qubits — one per ward job — entangled in a perfect GHZ state on{" "}
+            <strong className="text-foreground">Quantinuum Helios</strong> (512/512 shots,
+            job <code>0fc1f87b</code>), and a 4-qubit shift split driven to{" "}
+            <strong className="text-foreground">100% optimum mass</strong> with
+            Quantinuum&apos;s own F-VQE method (job <code>bb1021a2</code>). Receipts for
+            everything, advantage claimed for nothing.
           </p>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {STATS.map((s) => (
+              <div
+                key={s.value}
+                className="rounded-xl border border-primary/25 bg-primary/5 p-4"
+              >
+                <p className="font-mono text-2xl font-bold text-primary">{s.value}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </header>
+
 
         <section className="space-y-6">
           <Card>
