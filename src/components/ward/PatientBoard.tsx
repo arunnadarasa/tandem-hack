@@ -28,17 +28,17 @@ export function PatientBoard({
     <div className="space-y-6">
       {areas.map(({ area, list }) => (
         <section key={area}>
-          <h2 className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-primary" />
+          <h2 className="mb-2.5 flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_12px_var(--primary)]" />
             {area}
             <span className="font-mono text-[11px] font-medium normal-case tracking-normal">
               {list.length} patients
             </span>
           </h2>
-          <div className="overflow-hidden rounded-xl border border-border bg-card">
+          <div className="panel overflow-hidden rounded-2xl">
             <div
               className={cn(
-                "grid items-center gap-3 border-b border-border bg-accent/40 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+                "grid items-center gap-3 border-b border-border bg-surface/50 px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground",
                 gridCols,
               )}
             >
@@ -63,13 +63,14 @@ export function PatientBoard({
         </section>
       ))}
       {areas.length === 0 && (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-2xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
           No patients in this view.
         </p>
       )}
     </div>
   );
 }
+
 
 function PatientRow({
   patient,
