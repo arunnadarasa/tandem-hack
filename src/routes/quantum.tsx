@@ -1429,7 +1429,7 @@ q3: ──H────────────■──────────
           </Card>
 
 
-          <Card>
+          <Card id="skills">
             <H2>Take the skill with you</H2>
             <P>
               The agent skills behind this work are downloadable here — the quantum lanes and
