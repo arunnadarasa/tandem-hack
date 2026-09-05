@@ -1603,7 +1603,7 @@ q3: ──H────────────■──────────
             </p>
           </Card>
 
-          <Card>
+          <Card id="references">
             <H2>References</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {REFERENCES.map((r) => (
