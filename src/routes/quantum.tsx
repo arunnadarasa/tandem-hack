@@ -783,7 +783,7 @@ function QuantumPage() {
         <JumpNav active={active} />
 
         <section className="space-y-6">
-          <Card>
+          <Card id="problem">
             <H2>The problem: where jobs get lost in handovers</H2>
             <P>
               Junior doctors lose ward-round time <strong>criss-crossing</strong> bays and
