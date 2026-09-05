@@ -304,6 +304,54 @@ q3: ──H────────────■──────────
           </Card>
 
           <Card>
+            <H2>Helios: the whole ward on the next-gen stack</H2>
+            <P>
+              We scaled from 4 jobs to the <strong>whole ward: 26 jobs = 26 qubits</strong>,
+              run natively on <strong>Helios-1E-lite</strong> — Quantinuum&apos;s
+              next-generation system (roadmap: Helios → Sol → Apollo). Helios doesn&apos;t
+              take ordinary circuits: programs are written in <strong>Guppy</strong>
+              {" "}(quantum-first Python), compiled to <strong>HUGR</strong>, and executed
+              directly. We ran that lane end-to-end from a laptop.
+            </P>
+            <div className="mt-4 space-y-3">
+              {HELIOS.map((h) => (
+                <div
+                  key={h.job}
+                  className="rounded-lg border border-border bg-surface/70 px-3 py-2.5"
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-semibold">{h.program}</p>
+                    <code className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] text-primary">
+                      {h.job}
+                    </code>
+                  </div>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    {h.result}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <P>
+              <strong>Why judges should care:</strong> the Helios runtime supports real-time
+              classical compute in-loop (mid-circuit measurement, qubit reuse — published at
+              98 qubits). WardFlow&apos;s growth path: receipts that <em>react</em> to
+              outcomes mid-execution, not just sample a fixed circuit.
+            </P>
+            <blockquote className="mt-4 border-l-2 border-primary/50 pl-4 text-sm italic leading-relaxed text-foreground/90">
+              “We entangled all 26 qubits — one per ward job — on Quantinuum&apos;s next-gen
+              Helios stack. Every one of 512 shots collapsed to all-NOW or all-NEXT: textbook
+              GHZ, receipt attached. Tamper with a GHZ-signed record and the correlation
+              pattern breaks detectably.”
+            </blockquote>
+            <p className="mt-4 rounded-lg border border-border bg-surface/70 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+              Scale wording (binding): 26 qubits on an emulator is{" "}
+              <em>hardware-scale readiness</em>, never <em>quantum advantage</em> — it stays
+              classically simulable. Advantage is a pre-registered future claim.
+            </p>
+          </Card>
+
+
+          <Card>
             <H2>The honesty footnote</H2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {HONESTY.map((h) => (
