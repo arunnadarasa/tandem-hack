@@ -682,6 +682,47 @@ function useActiveSection(ids: string[]) {
   return active;
 }
 
+function JumpNav({ active }: { active: string }) {
+  const scrollTo = (id: string) => {
+    if (id === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <nav className="panel sticky top-4 z-30 mb-6 rounded-2xl p-2">
+      <div
+        className="flex gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => scrollTo(s.id)}
+            className={cn(
+              "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+              active === s.id
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-primary/30 bg-primary/10 text-primary hover:bg-accent/50",
+            )}
+          >
+            {s.label}
+          </button>
+        ))}
+        <button
+          onClick={() => scrollTo("top")}
+          className="shrink-0 rounded-full border border-border bg-surface/70 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent/50"
+        >
+          Top
+        </button>
+      </div>
+    </nav>
+  );
+}
+
 function QuantumPage() {
   const active = useActiveSection(SECTIONS.map((s) => s.id));
   return (
