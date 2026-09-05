@@ -105,9 +105,10 @@ export function SetupScreen() {
           </div>
         </div>
 
-        <div className="mt-6 flex items-end justify-between">
+        <div className="mt-8 flex items-end justify-between">
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide">Assign your patients</h2>
+            <p className="eyebrow">Step two</p>
+            <h2 className="font-display text-lg font-bold tracking-tight">Assign your patients</h2>
             <p className="text-xs text-muted-foreground">
               {ward.split(" — ")[0]} has {AREAS.length} bays of 6. Tap the beds you are covering.
             </p>
@@ -115,11 +116,12 @@ export function SetupScreen() {
           <p className="font-mono text-sm text-muted-foreground">{selected.length} selected</p>
         </div>
 
-        <div className="mt-3 grid gap-4 lg:grid-cols-2">
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {byArea.map(({ area, list }) => (
-            <div key={area} className="rounded-xl border border-border bg-card p-3">
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">{area}</h3>
+            <div key={area} className="panel rounded-2xl p-4">
+              <div className="mb-2.5 flex items-center justify-between">
+                <h3 className="font-display text-sm font-bold tracking-tight">{area}</h3>
+
                 <button
                   className="text-xs text-primary hover:underline"
                   onClick={() =>
