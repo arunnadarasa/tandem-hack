@@ -149,13 +149,41 @@ export function JobRow({
   job,
   showPatient = false,
   compact = false,
+  mergedStatus = false,
 }: {
   job: Job;
   showPatient?: boolean;
   compact?: boolean;
+  mergedStatus?: boolean;
 }) {
   const { setJobStatus, updateJob, patientById } = useWard();
   const patient = patientById(job.patientId);
+
+  const statusMenu = (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="shrink-0 rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <StatusPill status={job.status} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel className="text-xs">Set status</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => setJobStatus(job.id, "todo")}>To do</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setJobStatus(job.id, "chase")}>To chase</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setJobStatus(job.id, "done")}>Done</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel className="text-xs">Add timing</DropdownMenuLabel>
+        {TIMINGS.map((t) => (
+          <DropdownMenuItem key={t} onClick={() => updateJob(job.id, { timing: t })}>
+            {t}
+          </DropdownMenuItem>
+        ))}
+        {job.timing && (
+          <DropdownMenuItem onClick={() => updateJob(job.id, { timing: undefined })}>
+            Clear timing
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <div
@@ -189,14 +217,18 @@ export function JobRow({
             <NewsMini score={patient.news} />
           </div>
         )}
-        <p
-          className={cn(
-            "text-sm leading-snug",
-            job.status === "done" && "line-through decoration-muted-foreground",
-          )}
-        >
-          {job.title}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p
+            className={cn(
+              "text-sm leading-snug",
+              job.status === "done" && "line-through decoration-muted-foreground",
+            )}
+          >
+            {job.title}
+          </p>
+          {mergedStatus && statusMenu}
+        </div>
+
         {(job.detail || job.timing) && !compact && (
           <p className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {job.timing && (
@@ -209,31 +241,7 @@ export function JobRow({
         )}
       </div>
       {!showPatient && <CategoryTag category={job.category} />}
-      <DropdownMenu>
-        <DropdownMenuTrigger className="shrink-0 rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <StatusPill status={job.status} />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-52">
-          <DropdownMenuLabel className="text-xs">Set status</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "todo")}>To do</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "chase")}>
-            To chase
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setJobStatus(job.id, "done")}>Done</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel className="text-xs">Add timing</DropdownMenuLabel>
-          {TIMINGS.map((t) => (
-            <DropdownMenuItem key={t} onClick={() => updateJob(job.id, { timing: t })}>
-              {t}
-            </DropdownMenuItem>
-          ))}
-          {job.timing && (
-            <DropdownMenuItem onClick={() => updateJob(job.id, { timing: undefined })}>
-              Clear timing
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {!mergedStatus && statusMenu}
     </div>
   );
 }
