@@ -283,9 +283,16 @@ const CARD_FIELDS: { label: string; value: string }[] = [
   { label: "Repository", value: "arunnadarasa/tandem-hack-quantum" },
   { label: "Licence", value: "Open hackathon artifact · Nexus T&Cs govern backends" },
   { label: "Methodology", value: "Clinical Quantum Methodology v1.3" },
-  { label: "Hardware family", value: "Quantinuum trapped-ion: H1 20q · H2 56q · Helios 98q" },
+  {
+    label: "Hardware family",
+    value:
+      "Quantinuum trapped-ion: H1 20q · H2 26q · Helios 26q statevector (98q stabilizer lane)",
+  },
   { label: "Execution tier", value: "Emulators only — no QPU run claimed" },
-  { label: "Simulator classes", value: "Statevector ≤26q · stabilizer 98q · noisy H1/H2-Em" },
+  {
+    label: "Simulator classes",
+    value: "Statevector ≤26q · stabilizer 98q (Clifford-only) · noisy H1/H2-Em",
+  },
   { label: "Programming lanes", value: "pytket → Nexus → execute · Guppy → HUGR (Helios)" },
   { label: "Native gates", value: "1q rotations + ZZ / parameterised-angle ZZ" },
   { label: "Uncertainty envelope", value: "4·√(0.5/shots) — 0.088 @256, 0.0625 @512" },
