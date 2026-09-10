@@ -2045,8 +2045,11 @@ q3: ──H────────────■──────────
               <Metric label="H1-Em" value="0.1523 ✅" />
               <Metric label="H2-Em" value="0.1680 ✅" />
               <Metric label="Aer" value="0.125 ✅ (uniform, honest)" />
-              <Metric label="sv1" value="⚠️ gap" />
             </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              These five are the receipted backends — a subset of the full Nexus direct
+              lane inventoried below.
+            </p>
             <P>
               Scale-up: 8 qubits at p=2 done four times over (mean cut beats uniform,
               optimum mass tiny — an honest negative). 26q GHZ on Helios is{" "}
@@ -2054,6 +2057,40 @@ q3: ──H────────────■──────────
               43.61 vs 43.05 uniform (explores; F-VQE is the fix). H2-1LE cross-check
               running.
             </P>
+
+            <h3 className="mt-6 mb-1 text-sm font-semibold">
+              Nexus direct lane (qnexus) — verified 9 Sep 2026
+            </h3>
+            <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+              Eleven backends live in the direct lane. <strong>Simulator</strong> means an
+              idealised statevector lane; <strong>emulator</strong> means a physics /
+              noise-model lane.
+            </p>
+            <div className="overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[360px] text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["Backend", "Qubits", "Type"].map((h) => (
+                      <th
+                        key={h}
+                        className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {NEXUS_BACKENDS.map((b) => (
+                    <tr key={b.backend} className="border-t border-border align-top">
+                      <td className="px-3 py-2 font-mono text-xs">{b.backend}</td>
+                      <td className="px-3 py-2 font-mono">{b.qubits}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{b.type}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
               Module built with Claude Fable 5.1 under <strong>CQM v1.3</strong>. Quantum
               circuits via pytket + Guppy/HUGR on Quantinuum Nexus.
