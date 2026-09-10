@@ -225,9 +225,23 @@ const HELIOS_RECEIPTS: { backend: string; job: string; result: string; status?: 
   },
 ];
 
+const NEXUS_BACKENDS: { backend: string; qubits: string; type: "simulator" | "emulator" }[] = [
+  { backend: "aer_simulator", qubits: "26", type: "simulator" },
+  { backend: "aer_simulator_statevector", qubits: "26", type: "simulator" },
+  { backend: "aer_simulator_unitary", qubits: "26", type: "simulator" },
+  { backend: "H1-1LE", qubits: "20", type: "simulator" },
+  { backend: "H1-Emulator", qubits: "20", type: "emulator" },
+  { backend: "H2-1LE", qubits: "26", type: "simulator" },
+  { backend: "H2-Emulator", qubits: "26", type: "emulator" },
+  { backend: "Helios-1E-lite", qubits: "26", type: "emulator" },
+  { backend: "QulacsBackend", qubits: "20", type: "simulator" },
+  { backend: "Selene", qubits: "26", type: "simulator" },
+  { backend: "SelenePlus", qubits: "26", type: "simulator" },
+];
+
 const HONESTY = [
   "Small circuit (4 qubits, 10 edges) — a hackathon toy.",
-  "5 of 6 backends receipted (Aer fixed via AerConfig); sv1 is an honest gap (needs an AWS bucket).",
+  "All 5 receipted backends came back green (Aer fixed via AerConfig); receipts cover a subset of the 11 backends live in the Nexus direct lane.",
   "8 qubits at p=2: mean sampled cut beats uniform on all 4 backends, but optimum mass is tiny — an honest negative.",
   "26 qubits is 'hardware-scale readiness', never 'quantum advantage' — it is still classically simulable.",
   "26q GHZ slide beat: “We entangled all 26 qubits — one per ward job — on Quantinuum's next-gen Helios stack. Every one of 512 shots collapsed to all-NOW or all-NEXT: textbook GHZ, receipt attached.” (job 0fc1f87b)",
@@ -269,9 +283,16 @@ const CARD_FIELDS: { label: string; value: string }[] = [
   { label: "Repository", value: "arunnadarasa/tandem-hack-quantum" },
   { label: "Licence", value: "Open hackathon artifact · Nexus T&Cs govern backends" },
   { label: "Methodology", value: "Clinical Quantum Methodology v1.3" },
-  { label: "Hardware family", value: "Quantinuum trapped-ion: H1 20q · H2 56q · Helios 98q" },
+  {
+    label: "Hardware family",
+    value:
+      "Quantinuum trapped-ion: H1 20q · H2 26q · Helios 26q statevector (98q stabilizer lane)",
+  },
   { label: "Execution tier", value: "Emulators only — no QPU run claimed" },
-  { label: "Simulator classes", value: "Statevector ≤26q · stabilizer 98q · noisy H1/H2-Em" },
+  {
+    label: "Simulator classes",
+    value: "Statevector ≤26q · stabilizer 98q (Clifford-only) · noisy H1/H2-Em",
+  },
   { label: "Programming lanes", value: "pytket → Nexus → execute · Guppy → HUGR (Helios)" },
   { label: "Native gates", value: "1q rotations + ZZ / parameterised-angle ZZ" },
   { label: "Uncertainty envelope", value: "4·√(0.5/shots) — 0.088 @256, 0.0625 @512" },
@@ -380,7 +401,7 @@ const LIMITATIONS = [
   "No quantum advantage. Binding wording: emulator scale runs are 'hardware-scale readiness'. Advantage is a pre-registered future claim gated on real QPU plus matched classical baselines.",
   "Unoptimised variational circuits explore rather than concentrate (8q, 26q QAOA). F-VQE fixes this at 4q; scaling F-VQE training is untested here.",
   "The 98-qubit lane is Clifford-only (stabilizer) — it certifies entanglement scale and parity structure, not optimisation.",
-  "sv1 (Braket) gap: needs an AWS S3 bucket; local execution hit a Nexus 500. Recorded, not retried blind.",
+  "Receipts cover 5 backends; the Nexus direct lane currently exposes 11. The rest are inventoried, not receipted.",
   "Emulator noise models are not hardware — noisy-emulator receipts approximate but do not replace QPU characterisation.",
 ];
 
@@ -2024,8 +2045,11 @@ q3: ──H────────────■──────────
               <Metric label="H1-Em" value="0.1523 ✅" />
               <Metric label="H2-Em" value="0.1680 ✅" />
               <Metric label="Aer" value="0.125 ✅ (uniform, honest)" />
-              <Metric label="sv1" value="⚠️ gap" />
             </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              These five are the receipted backends — a subset of the full Nexus direct
+              lane inventoried below.
+            </p>
             <P>
               Scale-up: 8 qubits at p=2 done four times over (mean cut beats uniform,
               optimum mass tiny — an honest negative). 26q GHZ on Helios is{" "}
@@ -2033,6 +2057,40 @@ q3: ──H────────────■──────────
               43.61 vs 43.05 uniform (explores; F-VQE is the fix). H2-1LE cross-check
               running.
             </P>
+
+            <h3 className="mt-6 mb-1 text-sm font-semibold">
+              Nexus direct lane (qnexus) — verified 9 Sep 2026
+            </h3>
+            <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+              Eleven backends live in the direct lane. <strong>Simulator</strong> means an
+              idealised statevector lane; <strong>emulator</strong> means a physics /
+              noise-model lane.
+            </p>
+            <div className="overflow-x-auto rounded-lg border border-border">
+              <table className="w-full min-w-[360px] text-sm">
+                <thead className="bg-surface/70 text-muted-foreground">
+                  <tr>
+                    {["Backend", "Qubits", "Type"].map((h) => (
+                      <th
+                        key={h}
+                        className="px-3 py-2 text-left text-[11px] uppercase tracking-wider"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {NEXUS_BACKENDS.map((b) => (
+                    <tr key={b.backend} className="border-t border-border align-top">
+                      <td className="px-3 py-2 font-mono text-xs">{b.backend}</td>
+                      <td className="px-3 py-2 font-mono">{b.qubits}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{b.type}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
               Module built with Claude Fable 5.1 under <strong>CQM v1.3</strong>. Quantum
               circuits via pytket + Guppy/HUGR on Quantinuum Nexus.
