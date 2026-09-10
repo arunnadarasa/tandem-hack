@@ -401,7 +401,7 @@ const LIMITATIONS = [
   "No quantum advantage. Binding wording: emulator scale runs are 'hardware-scale readiness'. Advantage is a pre-registered future claim gated on real QPU plus matched classical baselines.",
   "Unoptimised variational circuits explore rather than concentrate (8q, 26q QAOA). F-VQE fixes this at 4q; scaling F-VQE training is untested here.",
   "The 98-qubit lane is Clifford-only (stabilizer) — it certifies entanglement scale and parity structure, not optimisation.",
-  "sv1 (Braket) gap: needs an AWS S3 bucket; local execution hit a Nexus 500. Recorded, not retried blind.",
+  "Receipts cover 5 backends; the Nexus direct lane currently exposes 11. The rest are inventoried, not receipted.",
   "Emulator noise models are not hardware — noisy-emulator receipts approximate but do not replace QPU characterisation.",
 ];
 
